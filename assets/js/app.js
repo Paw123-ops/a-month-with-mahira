@@ -116,11 +116,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // 2. PIN Keypad Interaction
   keypadBtns.forEach(btn => {
-    // Trigger on pointerdown for instant zero-latency touch feel
+    let lastTap = 0;
     const handlePress = (e) => {
       if (isUnlocked) return;
-      e.preventDefault();
+      const now = Date.now();
+      if (now - lastTap < 90) return; // Prevent double firing
+      lastTap = now;
+
       const key = btn.getAttribute('data-key');
+      if (!key) return;
 
       // Visual flash & ripple class
       btn.classList.add('key-pressed');
@@ -131,8 +135,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
       // Touch / Click particle effect
       const rect = btn.getBoundingClientRect();
-      const x = e.clientX || (rect.left + rect.width / 2);
-      const y = e.clientY || (rect.top + rect.height / 2);
+      const x = (e && e.clientX) ? e.clientX : (rect.left + rect.width / 2);
+      const y = (e && e.clientY) ? e.clientY : (rect.top + rect.height / 2);
       createTapParticle(x, y);
       
       // Haptic-like vibration on mobile devices
@@ -158,6 +162,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     btn.addEventListener('pointerdown', handlePress);
+    btn.addEventListener('click', handlePress);
   });
 
   // Keyboard support for desktop testing
@@ -190,14 +195,14 @@ document.addEventListener('DOMContentLoaded', () => {
   function updatePinDots(isAdding = false) {
     pinDots.forEach((dot, index) => {
       if (index < enteredPin.length) {
-        dot.classList.add('pin-dot-active');
+        dot.classList.add('pin-dot-active', 'bg-white', 'border-white', 'shadow-md');
         dot.classList.remove('bg-white/10', 'border-white/50');
         if (isAdding && index === enteredPin.length - 1) {
           dot.classList.add('pin-dot-pop');
           setTimeout(() => dot.classList.remove('pin-dot-pop'), 280);
         }
       } else {
-        dot.classList.remove('pin-dot-active', 'pin-dot-pop');
+        dot.classList.remove('pin-dot-active', 'bg-white', 'border-white', 'shadow-md', 'pin-dot-pop');
         dot.classList.add('bg-white/10', 'border-white/50');
       }
     });
@@ -239,25 +244,6 @@ document.addEventListener('DOMContentLoaded', () => {
       pinContainer.classList.add('animate-shake');
       pinErrorMsg.textContent = "Ups, coba ingat-ingat tanggal spesial kita ya sayang... 💕";
       pinErrorMsg.classList.remove('opacity-0');
-      
-      pinDots.forEach(dot => {
-        dot.classList.add('bg-red-400/80', 'border-red-300');
-      });
-
-      if ('vibrate' in navigator) {
-        navigator.vibrate([80, 50, 80]);
-      }
-
-      setTimeout(() => {
-        pinContainer.classList.remove('animate-shake');
-        enteredPin = '';
-        updatePinDots();
-        pinDots.forEach(dot => {
-          dot.classList.remove('bg-red-400/80', 'border-red-300');
-        });
-      }, 700);
-    }
-  }
       
       pinDots.forEach(dot => {
         dot.classList.add('bg-red-400/80', 'border-red-300');
