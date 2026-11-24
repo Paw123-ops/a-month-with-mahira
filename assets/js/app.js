@@ -558,4 +558,106 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     animate();
   }
+
+  // 11. Love Journey Counter (Real-time Live Stopwatch)
+  initLoveCounter();
+  function initLoveCounter() {
+    // Official Anniversary Start Date: 26 October 2026 00:00:00
+    const startDate = new Date(2026, 9, 26, 0, 0, 0); // Month is 0-indexed: 9 = October
+    const daysEl = document.getElementById('counter-days');
+    const hoursEl = document.getElementById('counter-hours');
+    const minutesEl = document.getElementById('counter-minutes');
+    const secondsEl = document.getElementById('counter-seconds');
+
+    function updateCounter() {
+      const now = new Date();
+      const diff = Math.max(0, now.getTime() - startDate.getTime());
+
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+      const minutes = Math.floor((diff / (1000 * 60)) % 60);
+      const seconds = Math.floor((diff / 1000) % 60);
+
+      if (daysEl) daysEl.textContent = String(days).padStart(2, '0');
+      if (hoursEl) hoursEl.textContent = String(hours).padStart(2, '0');
+      if (minutesEl) minutesEl.textContent = String(minutes).padStart(2, '0');
+      if (secondsEl) secondsEl.textContent = String(seconds).padStart(2, '0');
+    }
+
+    updateCounter();
+    setInterval(updateCounter, 1000);
+  }
+
+  // 12. Polaroid "Love This Memory" Buttons
+  initMemoryLikes();
+  function initMemoryLikes() {
+    const likeBtns = document.querySelectorAll('.like-memory-btn');
+    likeBtns.forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const heartIcon = btn.querySelector('.like-heart');
+        const countEl = btn.querySelector('.like-count');
+        let count = parseInt(countEl.textContent, 10) || 0;
+
+        playKeySound(false);
+
+        count++;
+        countEl.textContent = count;
+        heartIcon.textContent = '❤️';
+        heartIcon.classList.add('heart-bounce');
+        setTimeout(() => heartIcon.classList.remove('heart-bounce'), 400);
+
+        // Spawn 4 floating hearts
+        const btnRect = btn.getBoundingClientRect();
+        for (let i = 0; i < 4; i++) {
+          const heart = document.createElement('div');
+          heart.className = 'floating-polaroid-heart';
+          heart.textContent = ['❤️', '💖', '💕', '✨'][i % 4];
+          heart.style.left = `${btnRect.left + btnRect.width / 2}px`;
+          heart.style.top = `${btnRect.top}px`;
+          heart.style.setProperty('--dx', `${(Math.random() - 0.5) * 50}px`);
+          document.body.appendChild(heart);
+          setTimeout(() => heart.remove(), 850);
+        }
+      });
+    });
+  }
+
+  // 13. Month 2 Secret Time Capsule Modal
+  initCapsuleModal();
+  function initCapsuleModal() {
+    const timeCapsuleCard = document.getElementById('time-capsule-card');
+    const unlockCapsuleBtn = document.getElementById('unlock-capsule-btn');
+    const capsuleModal = document.getElementById('capsule-modal');
+    const closeCapsuleBtn = document.getElementById('close-capsule-btn');
+    const ackCapsuleBtn = document.getElementById('ack-capsule-btn');
+    const capsuleIconWrap = document.getElementById('capsule-icon-wrap');
+
+    function triggerCapsuleOpen() {
+      if (capsuleIconWrap) {
+        capsuleIconWrap.classList.add('animate-shake');
+        setTimeout(() => capsuleIconWrap.classList.remove('animate-shake'), 600);
+      }
+      playKeySound(false);
+      if (capsuleModal) {
+        capsuleModal.classList.remove('hidden');
+        setTimeout(() => capsuleModal.classList.remove('opacity-0'), 10);
+      }
+    }
+
+    function closeCapsule() {
+      if (capsuleModal) {
+        capsuleModal.classList.add('opacity-0');
+        setTimeout(() => capsuleModal.classList.add('hidden'), 300);
+      }
+    }
+
+    if (timeCapsuleCard) timeCapsuleCard.addEventListener('click', triggerCapsuleOpen);
+    if (unlockCapsuleBtn) unlockCapsuleBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      triggerCapsuleOpen();
+    });
+    if (closeCapsuleBtn) closeCapsuleBtn.addEventListener('click', closeCapsule);
+    if (ackCapsuleBtn) ackCapsuleBtn.addEventListener('click', closeCapsule);
+  }
 });

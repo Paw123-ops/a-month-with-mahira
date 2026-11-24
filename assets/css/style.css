@@ -218,3 +218,43 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: #A3485E;
 }
+
+/* Floating Hearts for Polaroid Like Button */
+.floating-polaroid-heart {
+  position: absolute;
+  pointer-events: none;
+  z-index: 30;
+  font-size: 18px;
+  animation: polaroidHeartRise 0.85s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+@keyframes polaroidHeartRise {
+  0% {
+    transform: translate(-50%, 0) scale(0.6);
+    opacity: 1;
+  }
+  50% {
+    transform: translate(calc(-50% + var(--dx, 0px)), -35px) scale(1.2);
+    opacity: 0.9;
+  }
+  100% {
+    transform: translate(calc(-50% + var(--dx, 0px)), -70px) scale(1.5);
+    opacity: 0;
+  }
+}
+
+/* Like Button Click Bounce */
+.heart-bounce {
+  animation: heartBounce 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+@keyframes heartBounce {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.4); }
+  100% { transform: scale(1); }
+}
+
+/* Shimmer Gold for Time Capsule */
+.gold-shimmer {
+  background: linear-gradient(135deg, #FFF9E6 0%, #FFFFFF 50%, #FFF0F5 100%);
+  border: 1.5px solid rgba(212, 175, 55, 0.4);
+  box-shadow: 0 10px 30px -5px rgba(212, 175, 55, 0.15), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}

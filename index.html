@@ -278,7 +278,55 @@
     </section>
 
     <!-- ---------------------------------------------------- -->
-    <!-- LOVE LETTER SECTION (Option 2: Classic Romantic Prose) -->
+    <!-- LOVE JOURNEY COUNTER (Live Real-Time Stopwatch) -->
+    <!-- ---------------------------------------------------- -->
+    <section id="counter-section" class="my-8">
+      <div class="glass-card rounded-3xl p-5 sm:p-6 border border-rose-200/70 shadow-lg text-center relative overflow-hidden">
+        <!-- Subtle Glow -->
+        <div class="absolute -top-10 -right-10 w-28 h-28 bg-rose-200/40 rounded-full blur-xl pointer-events-none"></div>
+        <div class="absolute -bottom-10 -left-10 w-28 h-28 bg-amber-100/50 rounded-full blur-xl pointer-events-none"></div>
+
+        <div class="flex items-center justify-center gap-2 mb-1">
+          <span class="text-rose-500 animate-pulse">❤️</span>
+          <span class="text-xs uppercase tracking-widest text-rose-700 font-bold">Waktu Bersama Kita</span>
+          <span class="text-rose-500 animate-pulse">❤️</span>
+        </div>
+        <h3 class="font-serif-title text-xl font-bold text-neutral-900">Sejak 26 Oktober 2026</h3>
+        <p class="text-[11px] text-neutral-500 mt-0.5">Setiap detik berharga yang kita lewati berdua</p>
+
+        <!-- 4 Grid Boxes: Days, Hours, Minutes, Seconds -->
+        <div class="grid grid-cols-4 gap-2 sm:gap-3 mt-4 text-center">
+          <!-- Days -->
+          <div class="bg-white/90 rounded-2xl p-2.5 sm:p-3 border border-rose-100 shadow-sm">
+            <span id="counter-days" class="block font-serif-title text-2xl sm:text-3xl font-bold text-rose-900 leading-none">30</span>
+            <span class="text-[10px] text-neutral-500 font-medium uppercase tracking-wider mt-1 block">Hari</span>
+          </div>
+          <!-- Hours -->
+          <div class="bg-white/90 rounded-2xl p-2.5 sm:p-3 border border-rose-100 shadow-sm">
+            <span id="counter-hours" class="block font-serif-title text-2xl sm:text-3xl font-bold text-rose-900 leading-none">00</span>
+            <span class="text-[10px] text-neutral-500 font-medium uppercase tracking-wider mt-1 block">Jam</span>
+          </div>
+          <!-- Minutes -->
+          <div class="bg-white/90 rounded-2xl p-2.5 sm:p-3 border border-rose-100 shadow-sm">
+            <span id="counter-minutes" class="block font-serif-title text-2xl sm:text-3xl font-bold text-rose-900 leading-none">00</span>
+            <span class="text-[10px] text-neutral-500 font-medium uppercase tracking-wider mt-1 block">Menit</span>
+          </div>
+          <!-- Seconds -->
+          <div class="bg-white/90 rounded-2xl p-2.5 sm:p-3 border border-rose-100 shadow-sm bg-rose-50/40">
+            <span id="counter-seconds" class="block font-serif-title text-2xl sm:text-3xl font-bold text-rose-600 leading-none animate-pulse">00</span>
+            <span class="text-[10px] text-rose-600 font-semibold uppercase tracking-wider mt-1 block">Detik</span>
+          </div>
+        </div>
+
+        <!-- Loving Ticker -->
+        <div class="mt-4 pt-3 border-t border-rose-100/60 flex items-center justify-center gap-1.5 text-xs text-neutral-600 italic font-prose">
+          <span>"Dan aku ingin terus menambah detiknya bersamamu..."</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ---------------------------------------------------- -->
+    <!-- LOVE LETTER SECTION -->
     <!-- ---------------------------------------------------- -->
     <section id="love-letter" class="my-10">
       <div class="text-center mb-6">
@@ -483,7 +531,13 @@
               <p class="font-prose italic text-neutral-600 text-xs mt-1.5 line-clamp-2">
                 "A simple carton of milk under the stadium lights, and my heart racing as I gathered every ounce of courage..."
               </p>
-              <span class="text-[10px] text-rose-500 mt-2 block font-medium">Tap foto untuk melihat utuh 🔍</span>
+              <div class="flex items-center justify-between pt-2.5 border-t border-rose-50/80 mt-2.5">
+                <span class="text-[10px] text-rose-500 font-medium">Zoom 🔍</span>
+                <button class="like-memory-btn flex items-center gap-1.5 px-3 py-1 rounded-full bg-rose-50 hover:bg-rose-100 border border-rose-200/80 text-xs font-semibold text-rose-800 transition active:scale-90 shadow-sm relative cursor-pointer" onclick="event.stopPropagation()">
+                  <span class="like-heart">🤍</span>
+                  <span class="like-count">26</span>
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -509,7 +563,13 @@
               <p class="font-prose italic text-neutral-600 text-xs mt-1.5 line-clamp-2">
                 "Just a quiet walk along the track beneath the evening lights, yet it felt like the quiet dawn of something profound..."
               </p>
-              <span class="text-[10px] text-rose-500 mt-2 block font-medium">Tap foto untuk melihat utuh 🔍</span>
+              <div class="flex items-center justify-between pt-2.5 border-t border-rose-50/80 mt-2.5">
+                <span class="text-[10px] text-rose-500 font-medium">Zoom 🔍</span>
+                <button class="like-memory-btn flex items-center gap-1.5 px-3 py-1 rounded-full bg-rose-50 hover:bg-rose-100 border border-rose-200/80 text-xs font-semibold text-rose-800 transition active:scale-90 shadow-sm relative cursor-pointer" onclick="event.stopPropagation()">
+                  <span class="like-heart">🤍</span>
+                  <span class="like-count">26</span>
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -535,7 +595,13 @@
               <p class="font-prose italic text-neutral-600 text-xs mt-1.5 line-clamp-2">
                 "A single notification that made my entire day stand still. The very first photograph you ever sent to me..."
               </p>
-              <span class="text-[10px] text-rose-500 mt-2 block font-medium">Tap foto untuk melihat utuh 🔍</span>
+              <div class="flex items-center justify-between pt-2.5 border-t border-rose-50/80 mt-2.5">
+                <span class="text-[10px] text-rose-500 font-medium">Zoom 🔍</span>
+                <button class="like-memory-btn flex items-center gap-1.5 px-3 py-1 rounded-full bg-rose-50 hover:bg-rose-100 border border-rose-200/80 text-xs font-semibold text-rose-800 transition active:scale-90 shadow-sm relative cursor-pointer" onclick="event.stopPropagation()">
+                  <span class="like-heart">🤍</span>
+                  <span class="like-count">26</span>
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -561,7 +627,13 @@
               <p class="font-prose italic text-neutral-600 text-xs mt-1.5 line-clamp-2">
                 "Our very first time stepping out into the world together, and already there was no need for pretense..."
               </p>
-              <span class="text-[10px] text-rose-500 mt-2 block font-medium">Tap foto untuk melihat utuh 🔍</span>
+              <div class="flex items-center justify-between pt-2.5 border-t border-rose-50/80 mt-2.5">
+                <span class="text-[10px] text-rose-500 font-medium">Zoom 🔍</span>
+                <button class="like-memory-btn flex items-center gap-1.5 px-3 py-1 rounded-full bg-rose-50 hover:bg-rose-100 border border-rose-200/80 text-xs font-semibold text-rose-800 transition active:scale-90 shadow-sm relative cursor-pointer" onclick="event.stopPropagation()">
+                  <span class="like-heart">🤍</span>
+                  <span class="like-count">26</span>
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -592,7 +664,13 @@
               <p class="font-prose italic text-neutral-700 text-xs mt-1.5 line-clamp-2">
                 "Beneath the quiet glow of that lone lamppost, the entire world seemed to hold its breath..."
               </p>
-              <span class="text-[10px] text-amber-700 mt-2 block font-semibold">Tap foto untuk melihat momen sakral 👑</span>
+              <div class="flex items-center justify-between pt-2.5 border-t border-amber-100 mt-2.5">
+                <span class="text-[10px] text-amber-700 font-semibold">Momen Sakral 👑</span>
+                <button class="like-memory-btn flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-amber-100 hover:bg-amber-200 border border-amber-300 text-xs font-bold text-amber-900 transition active:scale-90 shadow-sm relative cursor-pointer" onclick="event.stopPropagation()">
+                  <span class="like-heart">❤️</span>
+                  <span class="like-count">100</span>
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -618,7 +696,13 @@
               <p class="font-prose italic text-neutral-600 text-xs mt-1.5 line-clamp-2">
                 "Framed through a phone screen resting against a bottle, yet holding an entire world that had suddenly grown so much warmer..."
               </p>
-              <span class="text-[10px] text-rose-500 mt-2 block font-medium">Tap foto untuk melihat utuh 🔍</span>
+              <div class="flex items-center justify-between pt-2.5 border-t border-rose-50/80 mt-2.5">
+                <span class="text-[10px] text-rose-500 font-medium">Zoom 🔍</span>
+                <button class="like-memory-btn flex items-center gap-1.5 px-3 py-1 rounded-full bg-rose-50 hover:bg-rose-100 border border-rose-200/80 text-xs font-semibold text-rose-800 transition active:scale-90 shadow-sm relative cursor-pointer" onclick="event.stopPropagation()">
+                  <span class="like-heart">🤍</span>
+                  <span class="like-count">26</span>
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -644,7 +728,13 @@
               <p class="font-prose italic text-neutral-600 text-xs mt-1.5 line-clamp-2">
                 "Four little frames pressed onto a single photostrip, yet holding every shade of the love we share..."
               </p>
-              <span class="text-[10px] text-rose-500 mt-2 block font-medium">Tap foto untuk melihat utuh 🔍</span>
+              <div class="flex items-center justify-between pt-2.5 border-t border-rose-50/80 mt-2.5">
+                <span class="text-[10px] text-rose-500 font-medium">Zoom 🔍</span>
+                <button class="like-memory-btn flex items-center gap-1.5 px-3 py-1 rounded-full bg-rose-50 hover:bg-rose-100 border border-rose-200/80 text-xs font-semibold text-rose-800 transition active:scale-90 shadow-sm relative cursor-pointer" onclick="event.stopPropagation()">
+                  <span class="like-heart">🤍</span>
+                  <span class="like-count">26</span>
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -670,7 +760,13 @@
               <p class="font-prose italic text-neutral-600 text-xs mt-1.5 line-clamp-2">
                 "Standing beneath the campus trees amidst the festival breeze, our smiles completely effortless and warm..."
               </p>
-              <span class="text-[10px] text-rose-500 mt-2 block font-medium">Tap foto untuk melihat utuh 🔍</span>
+              <div class="flex items-center justify-between pt-2.5 border-t border-rose-50/80 mt-2.5">
+                <span class="text-[10px] text-rose-500 font-medium">Zoom 🔍</span>
+                <button class="like-memory-btn flex items-center gap-1.5 px-3 py-1 rounded-full bg-rose-50 hover:bg-rose-100 border border-rose-200/80 text-xs font-semibold text-rose-800 transition active:scale-90 shadow-sm relative cursor-pointer" onclick="event.stopPropagation()">
+                  <span class="like-heart">🤍</span>
+                  <span class="like-count">26</span>
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -694,6 +790,29 @@
         <p class="font-prose text-lg text-neutral-600 mt-3 max-w-sm mx-auto italic">
           "Karena apapun yang ada di depan nanti, aku ingin terus lewati berdua bersamamu."
         </p>
+
+        <!-- ---------------------------------------------------- -->
+        <!-- KAPSUL WAKTU BULAN KE-2 (Secret Locked Capsule) -->
+        <!-- ---------------------------------------------------- -->
+        <div id="time-capsule-card" class="gold-shimmer rounded-3xl p-5 sm:p-6 my-8 text-center cursor-pointer transition-all duration-300 hover:scale-[1.02] border border-amber-300 shadow-md relative overflow-hidden group">
+          <div id="capsule-icon-wrap" class="w-13 h-13 w-12 h-12 mx-auto rounded-full bg-amber-100 border border-amber-300 flex items-center justify-center text-2xl mb-2.5 group-hover:scale-110 transition duration-300 shadow-inner">
+            🔒
+          </div>
+          <span class="text-[9px] sm:text-[10px] uppercase tracking-widest text-amber-900 font-bold bg-amber-200/80 px-3 py-1 rounded-full border border-amber-300/60">
+            Kapsul Waktu Rahasia
+          </span>
+          <h3 class="font-serif-title font-bold text-lg sm:text-xl text-neutral-900 mt-2">
+            Pesan Rahasia untuk Bulan ke-2
+          </h3>
+          <p class="text-xs text-neutral-600 mt-1 max-w-xs mx-auto leading-relaxed">
+            Terkunci hingga <strong>26 Desember 2026</strong>. Paw sudah menyiapkan sepucuk surat rahasia & rencana kencan berikutnya di sini!
+          </p>
+          <div class="mt-4">
+            <button id="unlock-capsule-btn" class="px-5 py-2 rounded-full bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-700 hover:to-amber-800 text-white text-xs font-semibold shadow-md transition inline-flex items-center gap-1.5 cursor-pointer active:scale-95">
+              <span>Coba Buka Gembok 🔑</span>
+            </button>
+          </div>
+        </div>
 
         <!-- Big Interactive Love Button -->
         <div class="mt-8">
@@ -750,6 +869,33 @@
       <div id="modal-caption" class="pt-4 pb-2 px-1 text-center">
         <!-- Injected via JavaScript -->
       </div>
+    </div>
+  </div>
+
+  <!-- ======================================================== -->
+  <!-- TIME CAPSULE MODAL -->
+  <!-- ======================================================== -->
+  <div id="capsule-modal" class="fixed inset-0 z-50 flex items-center justify-center p-6 bg-black/65 backdrop-blur-sm hidden opacity-0 transition-opacity duration-300">
+    <div class="bg-[#FAF6EE] rounded-[2rem] p-6 sm:p-7 max-w-xs sm:max-w-sm w-full text-center shadow-2xl border-2 border-amber-300 relative">
+      <button id="close-capsule-btn" class="absolute top-4 right-4 text-neutral-400 hover:text-neutral-600">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+        </svg>
+      </button>
+      <div class="text-4xl mb-2">🥰🔐</div>
+      <h3 class="font-serif-title font-bold text-xl text-amber-950">Sabar ya, Naya sayang...</h3>
+      <div class="font-prose text-neutral-700 text-base mt-3 leading-relaxed border-t border-amber-200/60 pt-3 text-justify">
+        <p>
+          Gembok ini baru akan terbuka otomatis saat kita merayakan <strong>2 bulan jadian nanti (26 Desember 2026)</strong>! 💕
+        </p>
+        <p class="mt-2">
+          Paw sudah menyiapkan babak kejutan berikutnya dan rencana jalan-jalan spesial untuk kita berdua. Sekarang, nikmati dan syukuri dulu perjalanan 1 bulan indah kita ini ya cintaku...
+        </p>
+      </div>
+      <p class="font-script text-2xl text-rose-800 mt-3 text-right">— Paw ❤️</p>
+      <button id="ack-capsule-btn" class="mt-4 w-full py-2.5 rounded-full bg-amber-600 text-white text-xs font-semibold hover:bg-amber-700 transition shadow">
+        Aku Sabar Menunggu, Paw ❤️
+      </button>
     </div>
   </div>
 
