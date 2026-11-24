@@ -763,4 +763,62 @@ document.addEventListener('DOMContentLoaded', () => {
     if (closeCapsuleBtn) closeCapsuleBtn.addEventListener('click', closeCapsule);
     if (ackCapsuleBtn) ackCapsuleBtn.addEventListener('click', closeCapsule);
   }
+
+  // 14. 10 Hal yang Paling Paw Suka dari Naya
+  initTenThings();
+  function initTenThings() {
+    const reasonCards = document.querySelectorAll('.reason-card');
+    const progressText = document.getElementById('reasons-progress-text');
+    const progressIcon = document.getElementById('reasons-progress-icon');
+    const tappedSet = new Set();
+
+    reasonCards.forEach(card => {
+      card.addEventListener('click', (e) => {
+        const index = card.getAttribute('data-index');
+        tappedSet.add(index);
+        card.classList.add('is-tapped');
+
+        const hint = card.querySelector('.reason-tap-hint');
+        if (hint) {
+          hint.textContent = 'Paw sayang Naya ❤️';
+          hint.classList.add('text-rose-600', 'font-semibold');
+        }
+
+        playKeySound(false);
+
+        // Spawn floating hearts from click position or card center
+        const rect = card.getBoundingClientRect();
+        const clientX = (e.clientX && e.clientX > 0) ? e.clientX : (rect.left + rect.width / 2);
+        const clientY = (e.clientY && e.clientY > 0) ? e.clientY : (rect.top + rect.height / 2);
+
+        for (let i = 0; i < 5; i++) {
+          const heart = document.createElement('div');
+          heart.className = 'floating-reason-heart';
+          heart.textContent = ['❤️', '💖', '✨', '💕', '🥰'][i % 5];
+          heart.style.left = `${clientX}px`;
+          heart.style.top = `${clientY}px`;
+          heart.style.setProperty('--dx', `${(Math.random() - 0.5) * 60}px`);
+          document.body.appendChild(heart);
+          setTimeout(() => heart.remove(), 850);
+        }
+
+        if (progressText) {
+          const count = tappedSet.size;
+          if (count === 10) {
+            progressText.textContent = 'Semua 10 hal sudah kamu baca! Terima kasih sudah menjadi Naya yang luar biasa untuk Paw ❤️';
+            if (progressIcon) progressIcon.textContent = '🎉';
+            if (typeof confetti === 'function') {
+              confetti({
+                particleCount: 50,
+                spread: 70,
+                origin: { y: 0.6 }
+              });
+            }
+          } else {
+            progressText.textContent = `${count} dari 10 hal sudah kamu baca. Masih ada lagi hal manis tentangmu! 💕`;
+          }
+        }
+      });
+    });
+  }
 });

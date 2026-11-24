@@ -349,3 +349,37 @@ body {
   pointer-events: none !important;
   transition: all 0.9s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
+
+/* 10 Reasons Cards */
+.reason-card {
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.25s ease, border-color 0.25s ease, background 0.25s ease;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+.reason-card:active {
+  transform: scale(0.97);
+}
+.reason-card.is-tapped {
+  border-color: rgba(244, 63, 94, 0.5) !important;
+  background: rgba(255, 245, 247, 0.95) !important;
+  box-shadow: 0 10px 25px -5px rgba(244, 63, 94, 0.15), 0 0 0 1px rgba(244, 63, 94, 0.2) !important;
+}
+.floating-reason-heart {
+  position: fixed;
+  pointer-events: none;
+  z-index: 100;
+  font-size: 22px;
+  animation: floatReasonHeart 0.85s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+@keyframes floatReasonHeart {
+  0% {
+    transform: translate(-50%, -50%) scale(0.5) translateY(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(calc(-50% + var(--dx, 0px)), -50%) scale(1.4) translateY(-70px);
+    opacity: 0;
+  }
+}
+
