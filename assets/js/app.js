@@ -116,9 +116,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // 2. PIN Keypad Interaction
   keypadBtns.forEach(btn => {
-    // Trigger on pointerdown or click for ultra-responsive feel
+    // Trigger on pointerdown for instant zero-latency touch feel
     const handlePress = (e) => {
       if (isUnlocked) return;
+      e.preventDefault();
       const key = btn.getAttribute('data-key');
 
       // Visual flash & ripple class
@@ -156,7 +157,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     };
 
-    btn.addEventListener('click', handlePress);
+    btn.addEventListener('pointerdown', handlePress);
   });
 
   // Keyboard support for desktop testing
@@ -189,14 +190,14 @@ document.addEventListener('DOMContentLoaded', () => {
   function updatePinDots(isAdding = false) {
     pinDots.forEach((dot, index) => {
       if (index < enteredPin.length) {
-        dot.classList.add('bg-white', 'border-white', 'shadow-md');
+        dot.classList.add('pin-dot-active');
         dot.classList.remove('bg-white/10', 'border-white/50');
         if (isAdding && index === enteredPin.length - 1) {
           dot.classList.add('pin-dot-pop');
-          setTimeout(() => dot.classList.remove('pin-dot-pop'), 250);
+          setTimeout(() => dot.classList.remove('pin-dot-pop'), 280);
         }
       } else {
-        dot.classList.remove('bg-white', 'border-white', 'shadow-md', 'pin-dot-pop');
+        dot.classList.remove('pin-dot-active', 'pin-dot-pop');
         dot.classList.add('bg-white/10', 'border-white/50');
       }
     });
@@ -211,12 +212,12 @@ document.addEventListener('DOMContentLoaded', () => {
       // Success feedback
       playKeySound(true);
       pinDots.forEach(dot => {
-        dot.classList.remove('bg-white');
+        dot.classList.remove('pin-dot-active');
         dot.classList.add('bg-rose-400', 'border-rose-300', 'animate-pulse');
       });
 
-      if (lockIcon) lockIcon.classList.add('hidden');
-      if (unlockIcon) unlockIcon.classList.remove('hidden');
+      // Animate lock shackle opening!
+      document.getElementById('lock-shackle')?.classList.add('shackle-unlocked');
 
       // Start audio playback
       playAudio();
@@ -224,13 +225,13 @@ document.addEventListener('DOMContentLoaded', () => {
       // Trigger celebratory mini confetti
       triggerMiniConfetti();
 
-      // Slide up lockscreen after short delightful delay
+      // Fluid dissolve dismissal
       setTimeout(() => {
-        lockscreen.classList.add('-translate-y-full', 'opacity-0');
+        lockscreen.classList.add('lockscreen-dismiss');
         setTimeout(() => {
           lockscreen.style.display = 'none';
-        }, 800);
-      }, 500);
+        }, 850);
+      }, 450);
 
     } else {
       // WRONG PIN
@@ -238,6 +239,25 @@ document.addEventListener('DOMContentLoaded', () => {
       pinContainer.classList.add('animate-shake');
       pinErrorMsg.textContent = "Ups, coba ingat-ingat tanggal spesial kita ya sayang... 💕";
       pinErrorMsg.classList.remove('opacity-0');
+      
+      pinDots.forEach(dot => {
+        dot.classList.add('bg-red-400/80', 'border-red-300');
+      });
+
+      if ('vibrate' in navigator) {
+        navigator.vibrate([80, 50, 80]);
+      }
+
+      setTimeout(() => {
+        pinContainer.classList.remove('animate-shake');
+        enteredPin = '';
+        updatePinDots();
+        pinDots.forEach(dot => {
+          dot.classList.remove('bg-red-400/80', 'border-red-300');
+        });
+      }, 700);
+    }
+  }
       
       pinDots.forEach(dot => {
         dot.classList.add('bg-red-400/80', 'border-red-300');
@@ -499,6 +519,57 @@ document.addEventListener('DOMContentLoaded', () => {
         requestAnimationFrame(frame);
       }
     }());
+  }
+
+  // Lockscreen Ambient Stardust & Fireflies
+  initLockscreenStardust();
+  function initLockscreenStardust() {
+    const canvas = document.getElementById('lockscreen-canvas');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    let w = canvas.width = window.innerWidth;
+    let h = canvas.height = window.innerHeight;
+
+    window.addEventListener('resize', () => {
+      w = canvas.width = window.innerWidth;
+      h = canvas.height = window.innerHeight;
+    });
+
+    const sparks = [];
+    for (let i = 0; i < 24; i++) {
+      sparks.push({
+        x: Math.random() * w,
+        y: Math.random() * h,
+        r: Math.random() * 2 + 1,
+        alpha: Math.random() * 0.6 + 0.25,
+        vx: (Math.random() - 0.5) * 0.35,
+        vy: -(Math.random() * 0.45 + 0.15),
+        color: ['#FFD1DC', '#FFE4E1', '#FFFACD', '#FFFFFF', '#FFB6C1'][Math.floor(Math.random() * 5)]
+      });
+    }
+
+    function render() {
+      if (isUnlocked) return; // Save resources when unlocked
+      ctx.clearRect(0, 0, w, h);
+      sparks.forEach(s => {
+        s.x += s.vx;
+        s.y += s.vy;
+        if (s.y < -10) s.y = h + 10;
+        if (s.x < 0) s.x = w;
+        if (s.x > w) s.x = 0;
+        ctx.save();
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+        ctx.fillStyle = s.color;
+        ctx.globalAlpha = s.alpha * (0.6 + Math.sin(Date.now() * 0.003 + s.x) * 0.4);
+        ctx.shadowColor = s.color;
+        ctx.shadowBlur = 8;
+        ctx.fill();
+        ctx.restore();
+      });
+      requestAnimationFrame(render);
+    }
+    render();
   }
 
   // 10. Background Ambient Canvas Floating Hearts

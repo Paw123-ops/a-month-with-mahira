@@ -27,21 +27,33 @@ body {
   overflow-x: hidden;
 }
 
-/* Glassmorphism Styles */
+/* Live Cinematic Wallpaper Animation */
+@keyframes liveWallpaper {
+  0% { transform: scale(1) translate(0, 0); }
+  50% { transform: scale(1.05) translate(-0.5%, -0.8%); }
+  100% { transform: scale(1) translate(0, 0); }
+}
+.wallpaper-alive {
+  animation: liveWallpaper 18s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+/* Glassmorphism Styles for Modern Lockscreen */
 .glass-key {
-  background: rgba(255, 255, 255, 0.16);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  border: 1px solid rgba(255, 255, 255, 0.32);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.35);
-  transition: all 0.15s cubic-bezier(0.2, 0.8, 0.2, 1);
+  background: rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(28px) saturate(190%);
+  -webkit-backdrop-filter: blur(28px) saturate(190%);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.28), inset 0 1px 1.5px rgba(255, 255, 255, 0.45), inset 0 -1px 2px rgba(0, 0, 0, 0.2);
+  transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
   position: relative;
   overflow: hidden;
   user-select: none;
   -webkit-user-select: none;
+  touch-action: manipulation;
 }
 .glass-key:hover {
-  background: rgba(255, 255, 255, 0.24);
+  background: rgba(255, 255, 255, 0.22);
   border-color: rgba(255, 255, 255, 0.45);
 }
 
@@ -51,7 +63,7 @@ body {
   position: absolute;
   inset: 0;
   border-radius: 9999px;
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.8) 10%, rgba(255, 192, 203, 0.3) 40%, transparent 70%);
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.85) 10%, rgba(255, 182, 193, 0.4) 45%, transparent 75%);
   transform: scale(0);
   opacity: 0;
   pointer-events: none;
@@ -63,41 +75,62 @@ body {
   transition: 0s;
 }
 
-/* Keypad Active Glow Flash */
+/* Keypad Active Glow Flash & Fluid Spring Bounce */
 .glass-key.key-pressed {
-  transform: scale(0.90);
+  transform: scale(0.86) !important;
   background: rgba(255, 255, 255, 0.45) !important;
-  box-shadow: 0 0 25px rgba(255, 255, 255, 0.8), inset 0 0 12px rgba(255, 200, 220, 0.6) !important;
-  border-color: rgba(255, 255, 255, 0.8) !important;
+  box-shadow: 0 0 30px rgba(255, 255, 255, 0.9), 0 0 15px rgba(255, 182, 193, 0.6), inset 0 0 14px rgba(255, 220, 230, 0.7) !important;
+  border-color: rgba(255, 255, 255, 0.9) !important;
 }
 
 /* Floating Sparkle / Heart Particle from key */
 .key-tap-particle {
   position: fixed;
   pointer-events: none;
-  z-index: 60;
-  font-size: 18px;
+  z-index: 70;
+  font-size: 20px;
   animation: keyParticleFloat 0.65s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
 }
 @keyframes keyParticleFloat {
   0% {
-    transform: translate(-50%, -50%) scale(0.5) translateY(0);
+    transform: translate(-50%, -50%) scale(0.4) translateY(0);
     opacity: 1;
   }
   100% {
-    transform: translate(-50%, -50%) scale(1.4) translateY(-40px);
+    transform: translate(-50%, -50%) scale(1.4) translateY(-45px);
     opacity: 0;
   }
 }
 
-/* PIN Dot Pop Animation */
-.pin-dot-pop {
-  animation: dotPop 0.22s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+/* Fluid Spring PIN Dot Animation */
+.pin-dot-active {
+  background: radial-gradient(circle at 35% 35%, #ffffff 0%, #ffccd5 60%, #ff85a2 100%) !important;
+  border-color: #ffffff !important;
+  box-shadow: 0 0 16px rgba(255, 182, 193, 0.9), inset 0 1px 2px rgba(255, 255, 255, 0.8) !important;
 }
-@keyframes dotPop {
+.pin-dot-pop {
+  animation: dotSpring 0.28s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+@keyframes dotSpring {
   0% { transform: scale(1); }
-  50% { transform: scale(1.5); }
+  50% { transform: scale(1.55); }
   100% { transform: scale(1.15); }
+}
+
+/* Fluid Unlock Dismiss Animation */
+.lockscreen-dismiss {
+  transform: translateY(-105%) scale(0.96) !important;
+  filter: blur(10px) brightness(1.2) !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  transition: transform 0.85s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.7s ease, filter 0.7s ease !important;
+}
+
+/* Animated Shackle Spring */
+.shackle-unlocked {
+  transform: translateY(-4px) rotate(-25deg);
+  transform-origin: 8px 11px;
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .glass-card {
