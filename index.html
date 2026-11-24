@@ -26,6 +26,91 @@
   <audio id="bg-music" src="assets/audio/kita-lewati-berdua.mp3" preload="auto" loop></audio>
 
   <!-- ======================================================== -->
+  <!-- 0. BLOOMING FLOWERS PRELOADER (3-4s Duration) -->
+  <!-- ======================================================== -->
+  <div id="preloader" class="fixed inset-0 z-[100] flex flex-col items-center justify-between py-10 sm:py-12 px-6 bg-[#FAF7F2] select-none transition-all duration-1000 ease-in-out">
+    <!-- Ambient Floating Petals -->
+    <div class="absolute inset-0 overflow-hidden pointer-events-none">
+      <div class="absolute top-1/4 left-8 text-xl text-rose-300/60 animate-float">🌸</div>
+      <div class="absolute top-1/3 right-10 text-2xl text-pink-300/60 animate-float-reverse">🌷</div>
+      <div class="absolute bottom-1/4 left-12 text-lg text-rose-400/50 animate-float">🌹</div>
+      <div class="absolute bottom-1/3 right-8 text-xl text-amber-300/50 animate-float-reverse">✨</div>
+    </div>
+
+    <!-- Top Badge -->
+    <div class="relative z-10 text-center pt-2">
+      <span class="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-rose-50 border border-rose-200/80 text-rose-800 text-xs font-semibold tracking-wider uppercase shadow-sm">
+        <span>✨</span>
+        <span>A Special Surprise for Naya</span>
+        <span>✨</span>
+      </span>
+    </div>
+
+    <!-- Centerpiece: Blooming Flower Vector -->
+    <div class="relative z-10 flex flex-col items-center justify-center my-auto">
+      <div class="bouquet-sway relative w-44 h-44 sm:w-52 sm:h-52 flex items-center justify-center">
+        <!-- SVG Blooming Flower Illustration -->
+        <svg class="w-full h-full overflow-visible" viewBox="0 0 200 200" fill="none">
+          <!-- Stems -->
+          <path class="anim-stem" d="M100 190 Q95 130 100 80" stroke="#7A9A60" stroke-width="3.5" stroke-linecap="round"/>
+          <path class="anim-stem" d="M100 190 Q75 140 65 95" stroke="#8CAE70" stroke-width="3" stroke-linecap="round" style="animation-delay: 0.2s;"/>
+          <path class="anim-stem" d="M100 190 Q125 140 135 95" stroke="#8CAE70" stroke-width="3" stroke-linecap="round" style="animation-delay: 0.3s;"/>
+          
+          <!-- Leaves -->
+          <path class="anim-leaf opacity-0" d="M96 145 C75 140 70 120 98 128 C98 128 98 140 96 145 Z" fill="#8CAE70"/>
+          <path class="anim-leaf opacity-0" d="M104 135 C125 130 130 110 102 118 C102 118 102 130 104 135 Z" fill="#7A9A60" style="animation-delay: 0.8s;"/>
+
+          <!-- Flower 2 (Left Tulip - Pink) -->
+          <g transform="translate(65, 95)">
+            <ellipse class="anim-petal-1 opacity-0" cx="-10" cy="-12" rx="12" ry="18" fill="#F4A7B9" transform="rotate(-20)" />
+            <ellipse class="anim-petal-1 opacity-0" cx="10" cy="-12" rx="12" ry="18" fill="#F4A7B9" transform="rotate(20)" />
+            <ellipse class="anim-petal-center opacity-0" cx="0" cy="-14" rx="11" ry="20" fill="#E87A90" />
+          </g>
+
+          <!-- Flower 3 (Right Jasmine / Lily - Cream/White) -->
+          <g transform="translate(135, 95)">
+            <ellipse class="anim-petal-2 opacity-0" cx="0" cy="-18" rx="8" ry="16" fill="#FFFDF0" stroke="#E8DFC8" stroke-width="1"/>
+            <ellipse class="anim-petal-2 opacity-0" cx="-14" cy="-5" rx="8" ry="16" fill="#FFFDF0" stroke="#E8DFC8" stroke-width="1" transform="rotate(-60)"/>
+            <ellipse class="anim-petal-2 opacity-0" cx="14" cy="-5" rx="8" ry="16" fill="#FFFDF0" stroke="#E8DFC8" stroke-width="1" transform="rotate(60)"/>
+            <circle class="anim-petal-center opacity-0" cx="0" cy="-8" r="6" fill="#FCD34D" />
+          </g>
+
+          <!-- Flower 1 (Center Main Rose - Dusty Red/Rose) -->
+          <g transform="translate(100, 75)">
+            <!-- Outer Petals -->
+            <path class="anim-petal-1 opacity-0" d="M-28 0 C-35 -20 -10 -35 0 -22 C10 -35 35 -20 28 0 C22 20 -22 20 -28 0 Z" fill="#E89999" />
+            <path class="anim-petal-2 opacity-0" d="M-20 -5 C-25 -22 0 -30 18 -15 C25 5 0 22 -20 -5 Z" fill="#D9777F" />
+            <path class="anim-petal-3 opacity-0" d="M15 -5 C22 -20 -5 -28 -15 -12 C-20 8 5 20 15 -5 Z" fill="#C25975" />
+            <!-- Rose Core Bud -->
+            <ellipse class="anim-petal-center opacity-0" cx="0" cy="-6" rx="9" ry="12" fill="#A3485E" />
+            <circle class="anim-petal-center opacity-0" cx="0" cy="-6" r="4" fill="#8E2F48" />
+          </g>
+        </svg>
+      </div>
+
+      <!-- Title & Poetic Loading Text -->
+      <h2 class="font-serif-title font-bold text-2xl text-neutral-900 mt-6 tracking-wide">
+        A Month with Mahira
+      </h2>
+      <p class="font-prose text-base italic text-neutral-600 mt-1.5 text-center max-w-xs">
+        "Merekahkan kenangan manis untuk Naya... 🌸"
+      </p>
+
+      <!-- Romantic Progress Bar -->
+      <div class="w-64 max-w-xs mt-6 bg-rose-100/80 h-1.5 rounded-full overflow-hidden shadow-inner p-0.5">
+        <div id="preloader-progress" class="bg-gradient-to-r from-rose-400 via-rose-500 to-amber-400 h-full w-0 rounded-full transition-all duration-300 ease-out"></div>
+      </div>
+      <p id="preloader-percent" class="text-[11px] font-semibold text-rose-800/80 mt-2 tracking-wider">Menyiapkan kejutan... 0%</p>
+    </div>
+
+    <!-- Bottom Signature -->
+    <div class="relative z-10 text-center pb-2">
+      <p class="font-script text-2xl text-rose-700">Paw & Naya</p>
+      <p class="text-[10px] text-neutral-400 mt-0.5 tracking-wider">26.10.2026 • 1st Month Anniversary</p>
+    </div>
+  </div>
+
+  <!-- ======================================================== -->
   <!-- 1. LOCKSCREEN OVERLAY (8-Digit PIN Passcode) -->
   <!-- ======================================================== -->
   <div id="lockscreen" class="fixed inset-0 z-50 flex flex-col justify-between items-center transition-all duration-700 ease-in-out select-none overflow-y-auto overflow-x-hidden">

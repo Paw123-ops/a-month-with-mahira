@@ -46,6 +46,52 @@ document.addEventListener('DOMContentLoaded', () => {
   let isUnlocked = false;
   let isAudioPlaying = false;
 
+  // 0. Blooming Flowers Preloader Sequence (3.6s duration)
+  initPreloader();
+  function initPreloader() {
+    const preloader = document.getElementById('preloader');
+    const progressBar = document.getElementById('preloader-progress');
+    const percentText = document.getElementById('preloader-percent');
+    if (!preloader) return;
+
+    let progress = 0;
+    const totalDuration = 3600; // 3.6s
+    const stepTime = 40;
+    const increment = 100 / (totalDuration / stepTime);
+
+    const timer = setInterval(() => {
+      progress += increment;
+      if (progress >= 100) {
+        progress = 100;
+        clearInterval(timer);
+
+        if (progressBar) progressBar.style.width = '100%';
+        if (percentText) percentText.textContent = 'Merekah sempurna... 100% 🌸';
+
+        // Smooth dissolve into lockscreen
+        setTimeout(() => {
+          preloader.classList.add('preloader-fade-out');
+          setTimeout(() => {
+            preloader.style.display = 'none';
+          }, 950);
+        }, 350);
+
+      } else {
+        if (progressBar) progressBar.style.width = `${progress}%`;
+        if (percentText) {
+          const currentPercent = Math.floor(progress);
+          if (currentPercent < 35) {
+            percentText.textContent = `Menumbuhkan kelopak bunga... ${currentPercent}%`;
+          } else if (currentPercent < 75) {
+            percentText.textContent = `Menyusun kenangan berdua... ${currentPercent}%`;
+          } else {
+            percentText.textContent = `Merekahkan kejutan untuk Naya... ${currentPercent}% 🌸`;
+          }
+        }
+      }
+    }, stepTime);
+  }
+
   // 1. Clock & Date Initialization
   function updateClock() {
     const now = new Date();
