@@ -466,6 +466,82 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // Camera Shutter Sound Synthesizer & Smooth Flash
+  function playCameraShutter() {
+    try {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+      const now = audioCtx.currentTime;
+
+      // Click 1: Mechanical shutter trigger click (high-pitch snap)
+      const osc1 = audioCtx.createOscillator();
+      const gain1 = audioCtx.createGain();
+      osc1.type = 'triangle';
+      osc1.frequency.setValueAtTime(1600, now);
+      osc1.frequency.exponentialRampToValueAtTime(300, now + 0.035);
+      gain1.gain.setValueAtTime(0.35, now);
+      gain1.gain.exponentialRampToValueAtTime(0.001, now + 0.04);
+      osc1.connect(gain1);
+      gain1.connect(audioCtx.destination);
+      osc1.start(now);
+      osc1.stop(now + 0.045);
+
+      // Mechanical friction / mirror flap white noise burst
+      const bufferSize = Math.floor(audioCtx.sampleRate * 0.03);
+      const noiseBuffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+      const output = noiseBuffer.getChannelData(0);
+      for (let i = 0; i < bufferSize; i++) {
+        output[i] = Math.random() * 2 - 1;
+      }
+      const whiteNoise = audioCtx.createBufferSource();
+      whiteNoise.buffer = noiseBuffer;
+      const noiseFilter = audioCtx.createBiquadFilter();
+      noiseFilter.type = 'bandpass';
+      noiseFilter.frequency.value = 2200;
+      const noiseGain = audioCtx.createGain();
+      noiseGain.gain.setValueAtTime(0.2, now);
+      noiseGain.gain.exponentialRampToValueAtTime(0.001, now + 0.03);
+      whiteNoise.connect(noiseFilter);
+      noiseFilter.connect(noiseGain);
+      noiseGain.connect(audioCtx.destination);
+      whiteNoise.start(now);
+
+      // Click 2: Shutter blade close snap (50ms after first click)
+      const t2 = now + 0.05;
+      const osc2 = audioCtx.createOscillator();
+      const gain2 = audioCtx.createGain();
+      osc2.type = 'sine';
+      osc2.frequency.setValueAtTime(900, t2);
+      osc2.frequency.exponentialRampToValueAtTime(140, t2 + 0.05);
+      gain2.gain.setValueAtTime(0.4, t2);
+      gain2.gain.exponentialRampToValueAtTime(0.001, t2 + 0.06);
+      osc2.connect(gain2);
+      gain2.connect(audioCtx.destination);
+      osc2.start(t2);
+      osc2.stop(t2 + 0.065);
+    } catch (e) {
+      console.log('Camera sound unavailable:', e);
+    }
+  }
+
+  function triggerCameraFlash() {
+    let flash = document.getElementById('camera-flash-overlay');
+    if (!flash) {
+      flash = document.createElement('div');
+      flash.id = 'camera-flash-overlay';
+      flash.className = 'camera-flash-overlay';
+      document.body.appendChild(flash);
+    }
+    flash.classList.add('flashing');
+    setTimeout(() => {
+      flash.classList.remove('flashing');
+    }, 70);
+  }
+
   // 7. Polaroid Photo Lightbox Modal
   const polaroids = document.querySelectorAll('.polaroid-trigger');
   polaroids.forEach(p => {
@@ -473,17 +549,28 @@ document.addEventListener('DOMContentLoaded', () => {
       const img = p.querySelector('img');
       const title = p.getAttribute('data-title') || '';
       const quote = p.getAttribute('data-quote') || '';
+
+      // Shutter sound, flash, and haptic feedback
+      playCameraShutter();
+      triggerCameraFlash();
+      if ('vibrate' in navigator) {
+        navigator.vibrate(35);
+      }
+
       if (img && imageModal) {
         modalImg.src = img.src;
         modalCaption.innerHTML = `<h4 class="font-serif-title font-semibold text-lg text-rose-900">${title}</h4><p class="font-prose italic text-neutral-700 mt-2 text-base leading-relaxed">${quote}</p>`;
-        imageModal.classList.remove('hidden');
-        setTimeout(() => imageModal.classList.remove('opacity-0'), 10);
+        setTimeout(() => {
+          imageModal.classList.remove('hidden');
+          setTimeout(() => imageModal.classList.remove('opacity-0'), 15);
+        }, 80);
       }
     });
   });
 
   if (closeModalBtn) {
     closeModalBtn.addEventListener('click', () => {
+      playKeySound(false);
       if (imageModal) {
         imageModal.classList.add('opacity-0');
         setTimeout(() => imageModal.classList.add('hidden'), 300);
