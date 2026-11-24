@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>A Month with Mahira • Happy 1st Month Anniversary</title>
+  
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>❤️</text></svg>">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Canvas Confetti CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body class="bg-[#FAF8F5] text-neutral-800 antialiased selection:bg-rose-200 selection:text-rose-900">
+
+  <!-- Background Ambient Hearts Canvas -->
+  <canvas id="ambient-canvas" class="fixed inset-0 pointer-events-none z-0"></canvas>
+
+  <!-- Audio Element -->
+  <audio id="bg-music" src="assets/audio/kita-lewati-berdua.mp3" preload="auto" loop></audio>
+
+  <!-- ======================================================== -->
+  <!-- 1. LOCKSCREEN OVERLAY (8-Digit PIN Passcode) -->
+  <!-- ======================================================== -->
+  <div id="lockscreen" class="fixed inset-0 z-50 flex flex-col justify-between items-center transition-all duration-700 ease-in-out select-none overflow-y-auto overflow-x-hidden">
+    <!-- Background Wallpaper with Couple Jerseys -->
+    <div class="fixed inset-0 z-0">
+      <img src="assets/images/lockscreen-bg.jpg" alt="PAW and NAYA" class="w-full h-full object-cover object-center filter brightness-[0.72] contrast-[1.08]">
+      <!-- Vignette and Dark Gradient Overlay -->
+      <div class="absolute inset-0 bg-gradient-to-b from-black/65 via-black/30 to-black/85 backdrop-blur-[2px]"></div>
+    </div>
+
+    <!-- Inner Centered Mobile Shell -->
+    <div class="relative z-10 w-full max-w-sm min-h-screen flex flex-col justify-between items-center px-6 py-6 sm:py-8">
+      
+      <!-- Top Status Bar (iOS Style) -->
+      <div class="w-full flex justify-between items-center text-white/80 text-[11px] font-medium tracking-wide px-2 pt-1">
+        <div class="flex items-center gap-1.5">
+          <span>PAW & NAYA</span>
+          <span class="text-rose-300">❤️</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <!-- Signal Icon -->
+          <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
+            <path d="M12 3c-4.97 0-9 4.03-9 9 0 2.12.74 4.07 1.97 5.61L12 22l7.03-4.39C20.26 16.07 21 14.12 21 12c0-4.97-4.03-9-9-9zm0 15c-3.31 0-6-2.69-6-6s2.69-6 6-6 6 2.69 6 6-2.69 6-6 6z"/>
+          </svg>
+          <!-- Wifi Icon -->
+          <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
+            <path d="M12 4C7.31 4 3.07 5.9 0 8.98L12 21 24 8.98C20.93 5.9 16.69 4 12 4zm0 3.5c3.5 0 6.67 1.41 9 3.69L12 19.31 3 11.19c2.33-2.28 5.5-3.69 9-3.69z"/>
+          </svg>
+          <!-- Battery Icon -->
+          <div class="flex items-center gap-1">
+            <span class="text-[10px]">100%</span>
+            <div class="w-5 h-2.5 border border-white/80 rounded-sm p-0.5 flex items-center">
+              <div class="w-full h-full bg-white rounded-2xs"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Clock & Date Section -->
+      <div class="w-full text-center text-white mt-4 sm:mt-6">
+        <!-- Padlock Icon -->
+        <div class="flex justify-center mb-2">
+          <div class="p-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 shadow-md">
+            <svg id="lock-icon" class="w-4 h-4 text-white/90" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+            </svg>
+            <svg id="unlock-icon" class="w-4 h-4 text-rose-300 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 11V7a4 4 0 118 0m-4 8v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2z"/>
+            </svg>
+          </div>
+        </div>
+
+        <h1 id="lockscreen-clock" class="text-6xl sm:text-7xl font-extralight tracking-tight font-sans-body drop-shadow-md">21:45</h1>
+        <p id="lockscreen-date" class="text-xs sm:text-sm font-medium tracking-widest text-white/90 mt-1 uppercase">Selasa, 26 November 2026</p>
+
+        <!-- Passcode Prompt -->
+        <div class="mt-5 sm:mt-6">
+          <h2 class="text-sm sm:text-base font-medium tracking-wide text-white/95">Masukkan Tanggal Spesial Kita</h2>
+          <p class="text-[11px] text-white/60 mt-0.5 tracking-wider">8-Digit Passcode (DDMMYYYY)</p>
+        </div>
+
+        <!-- 8 PIN Dots Indicator in Frosted Capsule -->
+        <div class="flex justify-center mt-3">
+          <div id="pin-dots-container" class="inline-flex items-center gap-2.5 sm:gap-3 px-5 py-2.5 rounded-full bg-black/35 backdrop-blur-md border border-white/20 shadow-inner">
+            <div class="pin-dot w-3 h-3 sm:w-3.5 sm:h-3.5 rounded-full border border-white/50 bg-white/10 transition-all duration-200"></div>
+            <div class="pin-dot w-3 h-3 sm:w-3.5 sm:h-3.5 rounded-full border border-white/50 bg-white/10 transition-all duration-200"></div>
+            <div class="pin-dot w-3 h-3 sm:w-3.5 sm:h-3.5 rounded-full border border-white/50 bg-white/10 transition-all duration-200"></div>
+            <div class="pin-dot w-3 h-3 sm:w-3.5 sm:h-3.5 rounded-full border border-white/50 bg-white/10 transition-all duration-200"></div>
+            <div class="pin-dot w-3 h-3 sm:w-3.5 sm:h-3.5 rounded-full border border-white/50 bg-white/10 transition-all duration-200"></div>
+            <div class="pin-dot w-3 h-3 sm:w-3.5 sm:h-3.5 rounded-full border border-white/50 bg-white/10 transition-all duration-200"></div>
+            <div class="pin-dot w-3 h-3 sm:w-3.5 sm:h-3.5 rounded-full border border-white/50 bg-white/10 transition-all duration-200"></div>
+            <div class="pin-dot w-3 h-3 sm:w-3.5 sm:h-3.5 rounded-full border border-white/50 bg-white/10 transition-all duration-200"></div>
+          </div>
+        </div>
+
+        <!-- Feedback Error Message -->
+        <div class="h-5 mt-1 flex items-center justify-center">
+          <p id="pin-error" class="text-xs text-rose-300 font-medium transition-opacity duration-200 opacity-0"></p>
+        </div>
+      </div>
+
+      <!-- Keypad Section -->
+      <div class="w-full pb-2">
+        <div class="grid grid-cols-3 gap-x-5 sm:gap-x-6 gap-y-3 sm:gap-y-3.5 text-white max-w-[280px] sm:max-w-[300px] mx-auto">
+          <!-- 1 -->
+          <button data-key="1" class="keypad-btn glass-key w-16 h-16 sm:w-[70px] sm:h-[70px] rounded-full mx-auto flex flex-col justify-center items-center cursor-pointer">
+            <span class="text-2xl sm:text-3xl font-light leading-none">1</span>
+            <span class="text-[9px] text-white/50 tracking-widest font-normal">&nbsp;</span>
+          </button>
+          <!-- 2 -->
+          <button data-key="2" class="keypad-btn glass-key w-16 h-16 sm:w-[70px] sm:h-[70px] rounded-full mx-auto flex flex-col justify-center items-center cursor-pointer">
+            <span class="text-2xl sm:text-3xl font-light leading-none">2</span>
+            <span class="text-[9px] text-white/70 tracking-widest font-normal">ABC</span>
+          </button>
+          <!-- 3 -->
+          <button data-key="3" class="keypad-btn glass-key w-16 h-16 sm:w-[70px] sm:h-[70px] rounded-full mx-auto flex flex-col justify-center items-center cursor-pointer">
+            <span class="text-2xl sm:text-3xl font-light leading-none">3</span>
+            <span class="text-[9px] text-white/70 tracking-widest font-normal">DEF</span>
+          </button>
+          <!-- 4 -->
+          <button data-key="4" class="keypad-btn glass-key w-16 h-16 sm:w-[70px] sm:h-[70px] rounded-full mx-auto flex flex-col justify-center items-center cursor-pointer">
+            <span class="text-2xl sm:text-3xl font-light leading-none">4</span>
+            <span class="text-[9px] text-white/70 tracking-widest font-normal">GHI</span>
+          </button>
+          <!-- 5 -->
+          <button data-key="5" class="keypad-btn glass-key w-16 h-16 sm:w-[70px] sm:h-[70px] rounded-full mx-auto flex flex-col justify-center items-center cursor-pointer">
+            <span class="text-2xl sm:text-3xl font-light leading-none">5</span>
+            <span class="text-[9px] text-white/70 tracking-widest font-normal">JKL</span>
+          </button>
+          <!-- 6 -->
+          <button data-key="6" class="keypad-btn glass-key w-16 h-16 sm:w-[70px] sm:h-[70px] rounded-full mx-auto flex flex-col justify-center items-center cursor-pointer">
+            <span class="text-2xl sm:text-3xl font-light leading-none">6</span>
+            <span class="text-[9px] text-white/70 tracking-widest font-normal">MNO</span>
+          </button>
+          <!-- 7 -->
+          <button data-key="7" class="keypad-btn glass-key w-16 h-16 sm:w-[70px] sm:h-[70px] rounded-full mx-auto flex flex-col justify-center items-center cursor-pointer">
+            <span class="text-2xl sm:text-3xl font-light leading-none">7</span>
+            <span class="text-[9px] text-white/70 tracking-widest font-normal">PQRS</span>
+          </button>
+          <!-- 8 -->
+          <button data-key="8" class="keypad-btn glass-key w-16 h-16 sm:w-[70px] sm:h-[70px] rounded-full mx-auto flex flex-col justify-center items-center cursor-pointer">
+            <span class="text-2xl sm:text-3xl font-light leading-none">8</span>
+            <span class="text-[9px] text-white/70 tracking-widest font-normal">TUV</span>
+          </button>
+          <!-- 9 -->
+          <button data-key="9" class="keypad-btn glass-key w-16 h-16 sm:w-[70px] sm:h-[70px] rounded-full mx-auto flex flex-col justify-center items-center cursor-pointer">
+            <span class="text-2xl sm:text-3xl font-light leading-none">9</span>
+            <span class="text-[9px] text-white/70 tracking-widest font-normal">WXYZ</span>
+          </button>
+          <!-- Hint -->
+          <button id="hint-btn" data-key="hint" class="keypad-btn glass-key w-16 h-16 sm:w-[70px] sm:h-[70px] rounded-full mx-auto flex flex-col justify-center items-center cursor-pointer bg-white/10 hover:bg-white/20">
+            <span class="text-sm">💡</span>
+            <span class="text-[9px] font-medium text-rose-200 mt-0.5">Hint</span>
+          </button>
+          <!-- 0 -->
+          <button data-key="0" class="keypad-btn glass-key w-16 h-16 sm:w-[70px] sm:h-[70px] rounded-full mx-auto flex flex-col justify-center items-center cursor-pointer">
+            <span class="text-2xl sm:text-3xl font-light leading-none">0</span>
+            <span class="text-[9px] text-white/50 tracking-widest font-normal">&nbsp;</span>
+          </button>
+          <!-- Backspace -->
+          <button data-key="backspace" class="keypad-btn glass-key w-16 h-16 sm:w-[70px] sm:h-[70px] rounded-full mx-auto flex flex-col justify-center items-center cursor-pointer bg-white/10 hover:bg-white/20">
+            <svg class="w-5 h-5 text-white/90" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2M3 12l6.414 6.414a2 2 0 001.414.586H19a2 2 0 002-2V7a2 2 0 00-2-2h-8.172a2 2 0 00-1.414.586L3 12z"/>
+            </svg>
+          </button>
+        </div>
+        
+        <p class="text-center text-[11px] text-white/60 mt-4 tracking-wider font-light">Paw & Naya • 26th Forever ❤️</p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Hint Modal -->
+  <div id="hint-modal" class="fixed inset-0 z-50 flex items-center justify-center p-6 bg-black/60 backdrop-blur-sm hidden opacity-0 transition-opacity duration-300">
+    <div class="bg-white rounded-3xl p-6 max-w-xs text-center shadow-2xl border border-rose-100">
+      <div class="text-3xl mb-2">💡</div>
+      <h3 class="font-serif-title font-bold text-lg text-rose-900">Petunjuk Manis</h3>
+      <p class="text-sm text-neutral-600 mt-2 leading-relaxed">
+        Ingat malam indah di bawah lampu saat aku memberanikan diri menyatakan cinta padamu? 💕<br>
+        <span class="font-semibold text-rose-600 mt-1 block">Format: 26102026</span>
+      </p>
+      <button id="close-hint-btn" class="mt-4 px-6 py-2 bg-rose-600 text-white rounded-full text-xs font-semibold hover:bg-rose-700 transition">
+        Aku Mengerti ❤️
+      </button>
+    </div>
+  </div>
+
+  <!-- ======================================================== -->
+  <!-- FLOATING MUSIC PLAYER CONTROLLER -->
+  <!-- ======================================================== -->
+  <div class="fixed top-4 right-4 z-40 flex items-center gap-2">
+    <button id="music-toggle" class="flex items-center gap-2 px-3 py-2 rounded-full glass-card shadow-lg hover:shadow-xl transition-all border border-rose-200/60 group">
+      <!-- Vinyl Disc Graphic -->
+      <div id="music-disc" class="w-7 h-7 rounded-full bg-neutral-900 border-2 border-rose-300/80 flex items-center justify-center shadow-inner relative">
+        <div class="w-2.5 h-2.5 rounded-full bg-rose-500"></div>
+        <div class="absolute inset-0 rounded-full border border-white/20"></div>
+      </div>
+      <!-- Track Title Ticker -->
+      <div class="text-left pr-1 hidden sm:block max-w-[130px] overflow-hidden whitespace-nowrap">
+        <p class="text-[10px] font-bold text-rose-900 truncate">Kita Lewati Berdua</p>
+        <p class="text-[9px] text-rose-700/70 truncate">Overnight</p>
+      </div>
+      <!-- Play/Pause Icon -->
+      <div class="text-rose-700 w-4 h-4 flex items-center justify-center">
+        <svg id="music-icon-play" class="w-3.5 h-3.5 hidden" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M8 5v14l11-7z"/>
+        </svg>
+        <svg id="music-icon-pause" class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+        </svg>
+      </div>
+    </button>
+  </div>
+
+  <!-- ======================================================== -->
+  <!-- MAIN MICROSITE CONTENT -->
+  <!-- ======================================================== -->
+  <main class="relative z-10 max-w-lg mx-auto px-5 py-8 sm:py-12 overflow-hidden">
+
+    <!-- ---------------------------------------------------- -->
+    <!-- HERO SECTION -->
+    <!-- ---------------------------------------------------- -->
+    <section id="hero" class="text-center pt-8 pb-12 flex flex-col items-center">
+      <!-- Badge -->
+      <div class="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-rose-50 border border-rose-200/80 text-rose-800 text-xs font-medium tracking-wide mb-6 shadow-sm">
+        <span class="animate-pulse">✨</span>
+        <span>A Month with Mahira • 1st Month Anniversary</span>
+        <span class="animate-pulse">✨</span>
+      </div>
+
+      <!-- Main Heading -->
+      <h1 class="font-serif-title text-3xl sm:text-4xl font-semibold text-neutral-900 leading-snug">
+        Happy 1st Month,<br>
+        <span class="italic font-normal text-rose-800">Mahira Fauzia Abhinaya</span>
+      </h1>
+      <p class="font-prose text-lg text-neutral-600 mt-3 max-w-sm italic">
+        "Thirty days of gentle laughter, quiet courage, and holding your hand in mine."
+      </p>
+
+      <!-- Featured Portrait Frame -->
+      <div class="relative mt-8 group">
+        <!-- Ambient Glowing Aura -->
+        <div class="absolute -inset-2 bg-gradient-to-r from-rose-200 via-pink-100 to-amber-100 rounded-[2.5rem] blur-lg opacity-70 group-hover:opacity-100 transition duration-700"></div>
+        
+        <div class="relative w-64 h-80 rounded-[2.2rem] overflow-hidden shadow-xl border-4 border-white bg-white">
+          <img src="assets/images/mahira-portrait.jpg" alt="Mahira Fauzia Abhinaya" class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700">
+          
+          <!-- Bottom Overlay Tag -->
+          <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent p-4 text-white text-center">
+            <p class="font-script text-2xl text-rose-200">Naya</p>
+            <p class="text-[10px] tracking-widest uppercase text-white/80 font-light">My Favorite Notification</p>
+          </div>
+        </div>
+
+        <!-- Floating Milestone Tag -->
+        <div class="absolute -bottom-3 -right-2 bg-white/95 backdrop-blur-md px-3.5 py-1.5 rounded-full shadow-md border border-rose-100 text-[11px] font-semibold text-rose-900 flex items-center gap-1.5 animate-float">
+          <span>❤️</span>
+          <span>30 Days of Us</span>
+        </div>
+      </div>
+
+      <!-- Scroll Invitation -->
+      <div class="mt-10 flex flex-col items-center gap-1 text-neutral-400">
+        <span class="text-xs tracking-wider uppercase font-medium text-neutral-500">Buka Surat & Cerita Kita</span>
+        <svg class="w-4 h-4 text-rose-400 animate-bounce mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
+        </svg>
+      </div>
+    </section>
+
+    <!-- ---------------------------------------------------- -->
+    <!-- LOVE LETTER SECTION (Option 2: Classic Romantic Prose) -->
+    <!-- ---------------------------------------------------- -->
+    <section id="love-letter" class="my-10">
+      <div class="text-center mb-6">
+        <span class="text-xs uppercase tracking-widest text-rose-600 font-semibold">Love Letter</span>
+        <h2 class="font-serif-title text-2xl font-bold text-neutral-900 mt-1">A Letter from Paw</h2>
+        <p class="text-xs text-neutral-500 mt-1">Sentuhan segel lilin di bawah untuk membuka surat ini 💌</p>
+      </div>
+
+      <!-- Envelope Interactive Container -->
+      <div id="envelope-container" class="envelope-wrapper relative mx-auto max-w-sm rounded-3xl bg-[#F7F2EB] border border-[#E8DFC8] p-6 shadow-xl text-center">
+        <!-- Envelope Header Texture & Stamp -->
+        <div class="flex justify-between items-start border-b border-[#E5DAC0] pb-4 mb-4">
+          <div class="text-left">
+            <span class="text-[10px] uppercase tracking-wider text-neutral-400 font-medium">To My Beloved:</span>
+            <p class="font-serif-title font-semibold text-rose-900 text-sm">Mahira Fauzia Abhinaya</p>
+            <p class="text-[10px] text-neutral-500">26 October 2026 — Present</p>
+          </div>
+          <!-- Vintage Airmail Stamp -->
+          <div class="w-10 h-12 border-2 border-dashed border-rose-300 rounded bg-rose-50/50 flex flex-col items-center justify-center p-1 text-[8px] text-rose-800 font-serif">
+            <span>PAW</span>
+            <span class="text-xs">❤️</span>
+            <span>NAYA</span>
+          </div>
+        </div>
+
+        <!-- Envelope Body Preview -->
+        <div class="py-4">
+          <p class="font-prose italic text-neutral-700 text-base leading-relaxed">
+            "They say that time is merely a river measured in seconds, yet since the moment you stepped into my life, every hour has been measured in the quiet rhythm of my heart and the stillness of your smile..."
+          </p>
+        </div>
+
+        <!-- Wax Seal Button -->
+        <div class="pt-4 flex flex-col items-center">
+          <button id="wax-seal" class="wax-seal w-14 h-14 rounded-full flex items-center justify-center cursor-pointer transition-all duration-300 hover:scale-105 group relative" title="Buka Surat">
+            <div class="w-10 h-10 rounded-full border border-rose-200/40 flex items-center justify-center text-rose-100 font-serif font-bold text-xs">
+              P & N
+            </div>
+            <!-- Glow effect -->
+            <div class="absolute inset-0 rounded-full bg-rose-400/20 blur group-hover:blur-md"></div>
+          </button>
+          <span class="text-[11px] font-medium text-rose-800 mt-2 tracking-wide">Tap untuk Membaca Surat Utuh</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Full Letter Modal -->
+    <div id="full-letter-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-md hidden opacity-0 transition-opacity duration-300">
+      <div class="modal-content relative w-full max-w-md bg-[#FAF6EE] rounded-[2rem] p-6 sm:p-8 shadow-2xl border border-[#E8DFC8] transform scale-95 transition-transform duration-300 max-h-[90vh] overflow-y-auto">
+        <!-- Close Button -->
+        <button id="close-letter-btn" class="absolute top-4 right-4 p-2 rounded-full bg-neutral-200/60 text-neutral-600 hover:bg-neutral-300 transition">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+        </button>
+
+        <!-- Parchment Header -->
+        <div class="text-center border-b border-[#E8DFC8] pb-4 mb-6">
+          <span class="text-xs uppercase tracking-widest text-rose-700 font-semibold">First Month Letter</span>
+          <h3 class="font-serif-title text-2xl font-bold text-rose-950 mt-1">To My Beloved Naya,</h3>
+          <p class="text-[11px] text-neutral-500 mt-0.5">26.10.2026 • One Month with You</p>
+        </div>
+
+        <!-- Letter Body: Option 1 Deep Lyrical Odyssey -->
+        <div class="space-y-4 font-prose text-neutral-800 text-lg leading-relaxed text-justify">
+          <p>
+            They say that time is merely a river measured in seconds, yet since the moment you stepped into my life, every hour has been measured in the quiet rhythm of my heart and the stillness of your smile. Thirty days might seem like an ordinary breath on a fleeting calendar, but to me, this first month has felt like stumbling upon a quiet, golden sanctuary in a hurried world. In just thirty sunrises, you have painted my existence in colors and warmth I never even knew I was longing for.
+          </p>
+          <p>
+            Looking back, I still vividly remember the nervous boy under the stadium lights, clutching a carton of milk with trembling hands just to catch a glimpse of your laughter. I remember walking beside you on that quiet track, praying that our footsteps would never reach an end. From the very first photograph you ever sent me to the unrehearsed silliness of our first date, every memory with you has settled so deeply into my soul. With you, Naya, I never have to search for words or wear a disguise; in your presence, I am effortlessly, peacefully at home.
+          </p>
+          <p>
+            Thank you for the grace with which you love, the kindness that radiates from your eyes, and the gentleness that softens even my heaviest days. Thank you for choosing to hold my hand, for allowing me into your universe, and for giving me the greatest privilege of walking this journey as your partner.
+          </p>
+          <p>
+            As this melody quietly whispers between us—no matter what the horizon holds, no matter what storms may brew or how cold the nights may become, remember this solemn promise: I will never let go of your hand. Through every quiet dawn, every bustling afternoon, and every winding crossroad of this life, <em>kita lewati berdua</em>. We shall weather, endure, and cherish every single season together.
+          </p>
+          <p class="font-serif-title font-semibold text-rose-900 pt-3 text-center text-xl">
+            Happy 1st Month Anniversary, Mahira Fauzia Abhinaya.
+          </p>
+          <p class="text-sm font-prose italic text-neutral-500 text-center">
+            May this only be the gentle opening verse of an endless, beautiful story we shall write together for a lifetime.
+          </p>
+        </div>
+
+        <!-- Handwritten Signature -->
+        <div class="mt-8 pt-4 border-t border-[#E8DFC8] text-right">
+          <p class="text-xs text-neutral-500 italic">With all the devotion and tenderness my heart will ever know,</p>
+          <p class="font-script text-3xl text-rose-800 mt-1">— Paw</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ---------------------------------------------------- -->
+    <!-- INTERACTIVE 4-FLOWER BOUQUET SECTION -->
+    <!-- ---------------------------------------------------- -->
+    <section id="bouquet" class="my-14">
+      <div class="text-center mb-6">
+        <span class="text-xs uppercase tracking-widest text-rose-600 font-semibold">Special Digital Bouquet</span>
+        <h2 class="font-serif-title text-2xl font-bold text-neutral-900 mt-1">A Bouquet That Never Fades 💐</h2>
+        <p class="text-xs text-neutral-500 mt-1 max-w-xs mx-auto">
+          Empat bunga favoritmu, masing-masing menyimpan pesan kasih khusus untukmu.
+        </p>
+      </div>
+
+      <!-- 4 Flower Cards Grid -->
+      <div class="grid grid-cols-2 gap-3.5 sm:gap-4">
+        <!-- 1. Rose -->
+        <div data-flower="rose" class="flower-card glass-card rounded-2xl p-4 text-center cursor-pointer hover:shadow-lg hover:-translate-y-1 transition duration-300 border border-rose-100 group">
+          <div class="w-12 h-12 mx-auto rounded-full bg-rose-100 flex items-center justify-center text-2xl group-hover:scale-110 transition duration-300">
+            🌹
+          </div>
+          <h3 class="font-serif-title font-bold text-neutral-900 text-sm mt-3">Rose</h3>
+          <p class="text-[11px] text-rose-600 font-medium">Mawar Merah Muda</p>
+          <span class="inline-block mt-2 text-[10px] text-neutral-400 group-hover:text-rose-500">Tap to bloom ✨</span>
+        </div>
+
+        <!-- 2. Tulip -->
+        <div data-flower="tulip" class="flower-card glass-card rounded-2xl p-4 text-center cursor-pointer hover:shadow-lg hover:-translate-y-1 transition duration-300 border border-pink-100 group">
+          <div class="w-12 h-12 mx-auto rounded-full bg-pink-100 flex items-center justify-center text-2xl group-hover:scale-110 transition duration-300">
+            🌷
+          </div>
+          <h3 class="font-serif-title font-bold text-neutral-900 text-sm mt-3">Tulip</h3>
+          <p class="text-[11px] text-pink-600 font-medium">Our Pure Beginning</p>
+          <span class="inline-block mt-2 text-[10px] text-neutral-400 group-hover:text-pink-500">Tap to bloom ✨</span>
+        </div>
+
+        <!-- 3. Lily -->
+        <div data-flower="lily" class="flower-card glass-card rounded-2xl p-4 text-center cursor-pointer hover:shadow-lg hover:-translate-y-1 transition duration-300 border border-amber-100 group">
+          <div class="w-12 h-12 mx-auto rounded-full bg-amber-50 flex items-center justify-center text-2xl group-hover:scale-110 transition duration-300">
+            🌸
+          </div>
+          <h3 class="font-serif-title font-bold text-neutral-900 text-sm mt-3">Lily</h3>
+          <p class="text-[11px] text-amber-700 font-medium">Grace & Serenity</p>
+          <span class="inline-block mt-2 text-[10px] text-neutral-400 group-hover:text-amber-600">Tap to bloom ✨</span>
+        </div>
+
+        <!-- 4. Jasmine (Melati) -->
+        <div data-flower="jasmine" class="flower-card glass-card rounded-2xl p-4 text-center cursor-pointer hover:shadow-lg hover:-translate-y-1 transition duration-300 border border-emerald-100 group">
+          <div class="w-12 h-12 mx-auto rounded-full bg-emerald-50 flex items-center justify-center text-2xl group-hover:scale-110 transition duration-300">
+            🤍
+          </div>
+          <h3 class="font-serif-title font-bold text-neutral-900 text-sm mt-3">Jasmine</h3>
+          <p class="text-[11px] text-emerald-700 font-medium">Bunga Melati</p>
+          <span class="inline-block mt-2 text-[10px] text-neutral-400 group-hover:text-emerald-600">Tap to bloom ✨</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Flower Modal -->
+    <div id="flower-modal" class="fixed inset-0 z-50 flex items-center justify-center p-6 bg-black/60 backdrop-blur-sm hidden opacity-0 transition-opacity duration-300">
+      <div class="bg-white rounded-[2rem] p-6 max-w-xs w-full text-center shadow-2xl border border-rose-100 relative">
+        <button id="close-flower-btn" class="absolute top-4 right-4 text-neutral-400 hover:text-neutral-600">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+        </button>
+        <div id="flower-modal-icon" class="text-4xl mb-2">🌹</div>
+        <h3 id="flower-modal-name" class="font-serif-title font-bold text-lg text-rose-950">Rose</h3>
+        <p id="flower-modal-meaning" class="text-xs font-semibold text-rose-600 mt-0.5 tracking-wide">The Bloom of Deepening Love</p>
+        <p id="flower-modal-quote" class="font-prose italic text-neutral-700 text-base mt-4 leading-relaxed border-t border-rose-50 pt-3">
+          "For a love that blooms softly..."
+        </p>
+      </div>
+    </div>
+
+    <!-- ---------------------------------------------------- -->
+    <!-- MEMORIES TIMELINE (8 Chapters) -->
+    <!-- ---------------------------------------------------- -->
+    <section id="timeline" class="my-16">
+      <div class="text-center mb-8">
+        <span class="text-xs uppercase tracking-widest text-rose-600 font-semibold">Our Journey So Far</span>
+        <h2 class="font-serif-title text-2xl sm:text-3xl font-bold text-neutral-900 mt-1">Eight Little Chapters of Us 📸</h2>
+        <p class="text-xs text-neutral-500 mt-1 max-w-xs mx-auto">
+          Dari rasa malu-malu dan keberanian kecil, hingga melangkah bergandengan tangan ke hari ini.
+        </p>
+      </div>
+
+      <!-- Timeline Vertical Container -->
+      <div class="relative pl-6 sm:pl-8 border-l-2 border-rose-200/80 space-y-10 ml-3 sm:ml-4">
+
+        <!-- ================= CHAPTER 1 ================= -->
+        <div class="relative group">
+          <!-- Connector Pin -->
+          <div class="absolute -left-[31px] sm:-left-[39px] top-4 w-5 h-5 rounded-full bg-white border-4 border-rose-400 shadow-md flex items-center justify-center text-[8px]">
+            ❤️
+          </div>
+
+          <div class="polaroid polaroid-trigger p-4 rounded-2xl cursor-pointer rotate-1"
+               data-title="Chapter 1: The Milk & The Trembling Courage"
+               data-quote="A simple carton of milk under the stadium lights, and my heart racing as I gathered every ounce of courage just to capture your smile. You gave me sweetness that night, but looking back at this picture, the real sweetness was already sitting right in front of me.">
+            <!-- Washi tape decoration -->
+            <div class="washi-tape w-20 h-5 mx-auto -mt-6 mb-3 rounded-sm opacity-80"></div>
+            
+            <div class="w-full h-80 rounded-xl overflow-hidden bg-neutral-100">
+              <img src="assets/images/memory-1-milk.jpg" alt="Under the Court Lights" class="w-full h-full object-cover object-center group-hover:scale-105 transition duration-500">
+            </div>
+            
+            <div class="pt-3 pb-1 text-center">
+              <span class="text-[10px] uppercase tracking-wider text-rose-700 font-bold">Chapter 01 • Under the Court Lights</span>
+              <h4 class="font-serif-title font-semibold text-neutral-800 text-sm mt-0.5">The Milk & The Trembling Courage</h4>
+              <p class="font-prose italic text-neutral-600 text-xs mt-1.5 line-clamp-2">
+                "A simple carton of milk under the stadium lights, and my heart racing as I gathered every ounce of courage..."
+              </p>
+              <span class="text-[10px] text-rose-500 mt-2 block font-medium">Tap foto untuk melihat utuh 🔍</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ================= CHAPTER 2 ================= -->
+        <div class="relative group">
+          <div class="absolute -left-[31px] sm:-left-[39px] top-4 w-5 h-5 rounded-full bg-white border-4 border-rose-400 shadow-md flex items-center justify-center text-[8px]">
+            ❤️
+          </div>
+
+          <div class="polaroid polaroid-trigger p-4 rounded-2xl cursor-pointer -rotate-1"
+               data-title="Chapter 2: Footsteps Along the Track"
+               data-quote="Just a quiet walk along the track beneath the evening lights, yet it felt like the quiet dawn of something profound. I remember the flutter in my chest as I asked you to walk beside me—praying that the laps would never end. Little did I know then, every step taken next to you would soon become my favorite journey.">
+            <div class="washi-tape w-20 h-5 mx-auto -mt-6 mb-3 rounded-sm opacity-80"></div>
+            
+            <div class="w-full h-80 rounded-xl overflow-hidden bg-neutral-100">
+              <img src="assets/images/memory-2-walk.jpg" alt="Walking into our story" class="w-full h-full object-cover object-center group-hover:scale-105 transition duration-500">
+            </div>
+            
+            <div class="pt-3 pb-1 text-center">
+              <span class="text-[10px] uppercase tracking-wider text-rose-700 font-bold">Chapter 02 • Walking Into Our Story</span>
+              <h4 class="font-serif-title font-semibold text-neutral-800 text-sm mt-0.5">Footsteps Along the Track</h4>
+              <p class="font-prose italic text-neutral-600 text-xs mt-1.5 line-clamp-2">
+                "Just a quiet walk along the track beneath the evening lights, yet it felt like the quiet dawn of something profound..."
+              </p>
+              <span class="text-[10px] text-rose-500 mt-2 block font-medium">Tap foto untuk melihat utuh 🔍</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ================= CHAPTER 3 ================= -->
+        <div class="relative group">
+          <div class="absolute -left-[31px] sm:-left-[39px] top-4 w-5 h-5 rounded-full bg-white border-4 border-rose-400 shadow-md flex items-center justify-center text-[8px]">
+            ❤️
+          </div>
+
+          <div class="polaroid polaroid-trigger p-4 rounded-2xl cursor-pointer rotate-1"
+               data-title="Chapter 3: The First Portrait You Sent"
+               data-quote="A single notification that made my entire day stand still. The very first photograph you ever sent to me—so effortless, gentle, and utterly breathtaking. I remember staring at my screen for minutes, unable to hide the quiet smile on my face, realizing just how deeply and hopelessly you had captured my heart.">
+            <div class="washi-tape w-20 h-5 mx-auto -mt-6 mb-3 rounded-sm opacity-80"></div>
+            
+            <div class="w-full h-80 rounded-xl overflow-hidden bg-neutral-100">
+              <img src="assets/images/memory-3-first-selfie.jpg" alt="First selfie sent" class="w-full h-full object-cover object-center group-hover:scale-105 transition duration-500">
+            </div>
+            
+            <div class="pt-3 pb-1 text-center">
+              <span class="text-[10px] uppercase tracking-wider text-rose-700 font-bold">Chapter 03 • A Breathless Notification</span>
+              <h4 class="font-serif-title font-semibold text-neutral-800 text-sm mt-0.5">The First Portrait You Sent</h4>
+              <p class="font-prose italic text-neutral-600 text-xs mt-1.5 line-clamp-2">
+                "A single notification that made my entire day stand still. The very first photograph you ever sent to me..."
+              </p>
+              <span class="text-[10px] text-rose-500 mt-2 block font-medium">Tap foto untuk melihat utuh 🔍</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ================= CHAPTER 4 ================= -->
+        <div class="relative group">
+          <div class="absolute -left-[31px] sm:-left-[39px] top-4 w-5 h-5 rounded-full bg-white border-4 border-rose-400 shadow-md flex items-center justify-center text-[8px]">
+            ❤️
+          </div>
+
+          <div class="polaroid polaroid-trigger p-4 rounded-2xl cursor-pointer -rotate-1"
+               data-title="Chapter 4: Our First Date & Unfiltered Laughter"
+               data-quote="Our very first time stepping out into the world together, and already there was no need for pretense. Amidst our silly faces, messy hair, and unrestrained laughter, I discovered the most comforting truth: in your presence, I am completely and effortlessly myself. That night, two souls didn't just meet—they found their rhythm.">
+            <div class="washi-tape w-20 h-5 mx-auto -mt-6 mb-3 rounded-sm opacity-80"></div>
+            
+            <div class="w-full h-80 rounded-xl overflow-hidden bg-neutral-100">
+              <img src="assets/images/memory-4-first-date.jpg" alt="First date silly faces" class="w-full h-full object-cover object-center group-hover:scale-105 transition duration-500">
+            </div>
+            
+            <div class="pt-3 pb-1 text-center">
+              <span class="text-[10px] uppercase tracking-wider text-rose-700 font-bold">Chapter 04 • Just The Two of Us</span>
+              <h4 class="font-serif-title font-semibold text-neutral-800 text-sm mt-0.5">Our First Date & Unfiltered Laughter</h4>
+              <p class="font-prose italic text-neutral-600 text-xs mt-1.5 line-clamp-2">
+                "Our very first time stepping out into the world together, and already there was no need for pretense..."
+              </p>
+              <span class="text-[10px] text-rose-500 mt-2 block font-medium">Tap foto untuk melihat utuh 🔍</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ================= CHAPTER 5 (THE CONFESSION / ANNIVERSARY DATE) ================= -->
+        <div class="relative group">
+          <!-- Highlighted Golden Pin -->
+          <div class="absolute -left-[32px] sm:-left-[40px] top-4 w-6 h-6 rounded-full bg-amber-400 border-4 border-rose-500 shadow-lg flex items-center justify-center text-[10px] animate-pulse">
+            👑
+          </div>
+
+          <!-- Highlighted Special Gold-Rose Frame -->
+          <div class="polaroid polaroid-trigger p-4 rounded-2xl cursor-pointer border-2 border-amber-300 shadow-xl bg-gradient-to-b from-amber-50/40 via-white to-rose-50/30"
+               data-title="Chapter 5: October 26, 2026 — The Night We Began"
+               data-quote="Beneath the quiet glow of that lone lamppost, the entire world seemed to hold its breath. The night air was still, my heart was racing, and every word I whispered was my entire soul reaching out for yours. And when you smiled, gently choosing to walk this life with me, you made October 26th the most sacred date I will ever cherish. Here, our story truly began.">
+            <!-- Special Gold Tape -->
+            <div class="w-24 h-5 mx-auto -mt-6 mb-3 rounded-sm bg-amber-200/90 shadow-sm flex items-center justify-center text-[9px] font-bold text-amber-900 tracking-wider">
+              26.10.2026 ❤️
+            </div>
+            
+            <div class="w-full h-80 rounded-xl overflow-hidden bg-neutral-100 border border-amber-200">
+              <img src="assets/images/memory-5-confession.jpg" alt="October 26 Confession" class="w-full h-full object-cover object-center group-hover:scale-105 transition duration-500">
+            </div>
+            
+            <div class="pt-3 pb-1 text-center">
+              <span class="text-[10px] uppercase tracking-wider text-amber-800 font-bold bg-amber-100 px-2.5 py-0.5 rounded-full inline-block">The Sacred Beginning • 26.10.2026</span>
+              <h4 class="font-serif-title font-bold text-rose-950 text-base mt-1">October 26, 2026 — The Night We Began</h4>
+              <p class="font-prose italic text-neutral-700 text-xs mt-1.5 line-clamp-2">
+                "Beneath the quiet glow of that lone lamppost, the entire world seemed to hold its breath..."
+              </p>
+              <span class="text-[10px] text-amber-700 mt-2 block font-semibold">Tap foto untuk melihat momen sakral 👑</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ================= CHAPTER 6 ================= -->
+        <div class="relative group">
+          <div class="absolute -left-[31px] sm:-left-[39px] top-4 w-5 h-5 rounded-full bg-white border-4 border-rose-400 shadow-md flex items-center justify-center text-[8px]">
+            ❤️
+          </div>
+
+          <div class="polaroid polaroid-trigger p-4 rounded-2xl cursor-pointer rotate-1"
+               data-title="Chapter 6: Our First Date as 'Us'"
+               data-quote="Framed through a phone screen resting against a bottle, yet holding an entire world that had suddenly grown so much warmer. Our very first date with new titles—no longer just wishing, but officially walking as 'you and me.' Looking at you across that cafe table, I realized that happiness is not a distant horizon; it is wherever you are.">
+            <div class="washi-tape w-20 h-5 mx-auto -mt-6 mb-3 rounded-sm opacity-80"></div>
+            
+            <div class="w-full h-80 rounded-xl overflow-hidden bg-neutral-100">
+              <img src="assets/images/memory-6-official-date.jpg" alt="First date as couple" class="w-full h-full object-cover object-center group-hover:scale-105 transition duration-500">
+            </div>
+            
+            <div class="pt-3 pb-1 text-center">
+              <span class="text-[10px] uppercase tracking-wider text-rose-700 font-bold">Chapter 06 • A New Chapter in Bloom</span>
+              <h4 class="font-serif-title font-semibold text-neutral-800 text-sm mt-0.5">Our First Date as 'Us'</h4>
+              <p class="font-prose italic text-neutral-600 text-xs mt-1.5 line-clamp-2">
+                "Framed through a phone screen resting against a bottle, yet holding an entire world that had suddenly grown so much warmer..."
+              </p>
+              <span class="text-[10px] text-rose-500 mt-2 block font-medium">Tap foto untuk melihat utuh 🔍</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ================= CHAPTER 7 ================= -->
+        <div class="relative group">
+          <div class="absolute -left-[31px] sm:-left-[39px] top-4 w-5 h-5 rounded-full bg-white border-4 border-rose-400 shadow-md flex items-center justify-center text-[8px]">
+            ❤️
+          </div>
+
+          <div class="polaroid polaroid-trigger p-4 rounded-2xl cursor-pointer -rotate-1"
+               data-title="Chapter 7: Four Frames of Us at Satuang Coffee"
+               data-quote="Four little frames pressed onto a single photostrip, yet holding every shade of the love we share. From the gentlest smiles and cozy embraces, to our wild, silly laughter that belongs to us alone. In that tiny booth, time stood still—printing tangible proof of just how effortless, joyful, and beautiful loving you truly is.">
+            <div class="washi-tape w-20 h-5 mx-auto -mt-6 mb-3 rounded-sm opacity-80"></div>
+            
+            <div class="w-full h-80 rounded-xl overflow-hidden bg-neutral-100">
+              <img src="assets/images/memory-7-photobooth.jpg" alt="Gemintang Photobooth" class="w-full h-full object-cover object-center group-hover:scale-105 transition duration-500">
+            </div>
+            
+            <div class="pt-3 pb-1 text-center">
+              <span class="text-[10px] uppercase tracking-wider text-rose-700 font-bold">Chapter 07 • Four Frames, Infinite Memories</span>
+              <h4 class="font-serif-title font-semibold text-neutral-800 text-sm mt-0.5">Four Frames at Satuang Coffee</h4>
+              <p class="font-prose italic text-neutral-600 text-xs mt-1.5 line-clamp-2">
+                "Four little frames pressed onto a single photostrip, yet holding every shade of the love we share..."
+              </p>
+              <span class="text-[10px] text-rose-500 mt-2 block font-medium">Tap foto untuk melihat utuh 🔍</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ================= CHAPTER 8 ================= -->
+        <div class="relative group">
+          <div class="absolute -left-[31px] sm:-left-[39px] top-4 w-5 h-5 rounded-full bg-white border-4 border-rose-400 shadow-md flex items-center justify-center text-[8px]">
+            ❤️
+          </div>
+
+          <div class="polaroid polaroid-trigger p-4 rounded-2xl cursor-pointer rotate-1"
+               data-title="Chapter 8: UMB Festival — Here and Now"
+               data-quote="Standing beneath the campus trees amidst the festival breeze, our smiles completely effortless and warm. Thirty days of laughter, quiet courage, and memories etched deeply into my soul have led us right here to this very moment. Looking at you today, my heart is as certain as it has ever been: this is only the sweet beginning of all our tomorrows.">
+            <div class="washi-tape w-20 h-5 mx-auto -mt-6 mb-3 rounded-sm opacity-80"></div>
+            
+            <div class="w-full h-80 rounded-xl overflow-hidden bg-neutral-100">
+              <img src="assets/images/memory-8-umb-festival.jpg" alt="UMB Festival" class="w-full h-full object-cover object-center group-hover:scale-105 transition duration-500">
+            </div>
+            
+            <div class="pt-3 pb-1 text-center">
+              <span class="text-[10px] uppercase tracking-wider text-rose-700 font-bold">Chapter 08 • Thirty Days of Us</span>
+              <h4 class="font-serif-title font-semibold text-neutral-800 text-sm mt-0.5">UMB Festival — Here and Now</h4>
+              <p class="font-prose italic text-neutral-600 text-xs mt-1.5 line-clamp-2">
+                "Standing beneath the campus trees amidst the festival breeze, our smiles completely effortless and warm..."
+              </p>
+              <span class="text-[10px] text-rose-500 mt-2 block font-medium">Tap foto untuk melihat utuh 🔍</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ---------------------------------------------------- -->
+    <!-- CLOSING SECTION (Interactive Button & WhatsApp) -->
+    <!-- ---------------------------------------------------- -->
+    <section id="closing" class="my-16 text-center">
+      <div class="bg-gradient-to-b from-rose-50/70 via-white to-pink-50/80 rounded-[2.5rem] p-8 border border-rose-100 shadow-xl relative overflow-hidden">
+        
+        <!-- Decorative subtle background heart -->
+        <div class="absolute -top-12 -right-12 text-rose-100 text-9xl pointer-events-none select-none opacity-40">❤️</div>
+
+        <span class="text-xs uppercase tracking-widest text-rose-700 font-semibold">Closing Note</span>
+        <h2 class="font-serif-title text-2xl sm:text-3xl font-bold text-neutral-900 mt-2">
+          Will you walk into all the months ahead with me?
+        </h2>
+        <p class="font-prose text-lg text-neutral-600 mt-3 max-w-sm mx-auto italic">
+          "Karena apapun yang ada di depan nanti, aku ingin terus lewati berdua bersamamu."
+        </p>
+
+        <!-- Big Interactive Love Button -->
+        <div class="mt-8">
+          <button id="love-btn" class="px-8 py-4 rounded-full bg-rose-600 text-white font-semibold text-sm shadow-lg shadow-rose-500/30 hover:bg-rose-700 active:scale-95 transition-all duration-300 flex items-center gap-2 mx-auto cursor-pointer">
+            <span>I Love You Too, Paw ❤️</span>
+          </button>
+        </div>
+
+        <!-- Response Toast After Clicking Love Button -->
+        <div id="love-response" class="mt-6 p-4 rounded-2xl bg-white/90 border border-rose-200 text-rose-900 text-sm hidden opacity-0 transition-opacity duration-500 shadow-md">
+          <p class="font-serif-title font-bold text-base">Terima kasih sudah memilihku, Naya. 💕</p>
+          <p class="text-xs text-neutral-600 mt-1">Selamat satu bulan jadian kita. Aku berjanji akan selalu ada untukmu.</p>
+        </div>
+
+        <!-- WhatsApp Quick Reply Button -->
+        <div class="mt-8 pt-6 border-t border-rose-100 flex flex-col items-center">
+          <a href="https://wa.me/?text=Halo%20Paw!%20Aku%20sudah%20buka%20dan%20baca%20semua%20cerita%20di%20web%20kita.%20Makasih%20banyak%20ya%20sayang,%20happy%201st%20month!%20Aku%20sayang%20banget%20sama%20kamu%20%F0%9F%A5%B0%E2%9D%A4%EF%B8%8F" 
+             target="_blank" 
+             class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-emerald-600 text-white text-xs font-semibold shadow hover:bg-emerald-700 transition">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86.173.086.275.072.376-.044.101-.116.433-.506.549-.68.116-.173.231-.145.39-.086s1.011.477 1.184.564.289.13.332.202c.045.072.045.419-.099.824z"/>
+            </svg>
+            <span>Kirim Pesan ke WhatsApp Paw</span>
+          </a>
+          <span class="text-[10px] text-neutral-400 mt-2">Beri tahu Paw kalau kamu sudah melihat kejutannya ✨</span>
+        </div>
+
+      </div>
+
+      <!-- Footer Branding -->
+      <footer class="mt-12 text-neutral-400 text-xs">
+        <p class="font-script text-2xl text-rose-700">Paw & Naya</p>
+        <p class="text-[11px] mt-0.5">A Month with Mahira • 26 October 2026 — Forever & Always</p>
+      </footer>
+    </section>
+
+  </main>
+
+  <!-- ======================================================== -->
+  <!-- LIGHTBOX IMAGE MODAL -->
+  <!-- ======================================================== -->
+  <div id="image-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md hidden opacity-0 transition-opacity duration-300">
+    <div class="relative max-w-sm w-full bg-white rounded-3xl p-4 shadow-2xl border border-rose-100 overflow-hidden">
+      <button id="close-modal-btn" class="absolute top-3 right-3 z-10 w-8 h-8 rounded-full bg-black/50 text-white flex items-center justify-center hover:bg-black/70 transition">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+        </svg>
+      </button>
+      
+      <div class="w-full max-h-[60vh] rounded-2xl overflow-hidden bg-neutral-900 flex items-center justify-center">
+        <img id="modal-img" src="" alt="Full view" class="w-full h-auto max-h-[60vh] object-contain">
+      </div>
+
+      <div id="modal-caption" class="pt-4 pb-2 px-1 text-center">
+        <!-- Injected via JavaScript -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Main JavaScript Logic -->
+  <script src="assets/js/app.js"></script>
+</body>
+</html>

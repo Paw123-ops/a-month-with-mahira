@@ -1,0 +1,220 @@
+@import url('https://fonts.googleapis.com/css2?family=Alex+Brush&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Playfair+Display:ital,wght@0,500;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+
+/* Typography Utilities */
+.font-serif-title {
+  font-family: 'Playfair Display', Georgia, serif;
+}
+.font-prose {
+  font-family: 'Cormorant Garamond', Garamond, Georgia, serif;
+}
+.font-sans-body {
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+}
+.font-script {
+  font-family: 'Alex Brush', cursive;
+}
+
+/* Base Smooth Styling */
+html {
+  scroll-behavior: smooth;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  background-color: #FAF8F5;
+  color: #2C2C2C;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  overflow-x: hidden;
+}
+
+/* Glassmorphism Styles */
+.glass-key {
+  background: rgba(255, 255, 255, 0.16);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.32);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.35);
+  transition: all 0.15s cubic-bezier(0.2, 0.8, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.glass-key:hover {
+  background: rgba(255, 255, 255, 0.24);
+  border-color: rgba(255, 255, 255, 0.45);
+}
+
+/* Keypad Ripple Effect */
+.glass-key::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.8) 10%, rgba(255, 192, 203, 0.3) 40%, transparent 70%);
+  transform: scale(0);
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 0.35s ease-out, opacity 0.35s ease-out;
+}
+.glass-key.key-pressed::after {
+  transform: scale(2.2);
+  opacity: 1;
+  transition: 0s;
+}
+
+/* Keypad Active Glow Flash */
+.glass-key.key-pressed {
+  transform: scale(0.90);
+  background: rgba(255, 255, 255, 0.45) !important;
+  box-shadow: 0 0 25px rgba(255, 255, 255, 0.8), inset 0 0 12px rgba(255, 200, 220, 0.6) !important;
+  border-color: rgba(255, 255, 255, 0.8) !important;
+}
+
+/* Floating Sparkle / Heart Particle from key */
+.key-tap-particle {
+  position: fixed;
+  pointer-events: none;
+  z-index: 60;
+  font-size: 18px;
+  animation: keyParticleFloat 0.65s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+@keyframes keyParticleFloat {
+  0% {
+    transform: translate(-50%, -50%) scale(0.5) translateY(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1.4) translateY(-40px);
+    opacity: 0;
+  }
+}
+
+/* PIN Dot Pop Animation */
+.pin-dot-pop {
+  animation: dotPop 0.22s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+@keyframes dotPop {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.5); }
+  100% { transform: scale(1.15); }
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 240, 240, 0.6);
+}
+
+.glass-dark {
+  background: rgba(20, 15, 20, 0.65);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+/* Keyframe Animations */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-10px); }
+  40%, 80% { transform: translateX(10px); }
+}
+.animate-shake {
+  animation: shake 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}
+
+@keyframes pulseSlow {
+  0%, 100% { transform: scale(1); opacity: 0.9; }
+  50% { transform: scale(1.06); opacity: 1; }
+}
+.animate-pulse-slow {
+  animation: pulseSlow 3s ease-in-out infinite;
+}
+
+@keyframes floatGentle {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-8px) rotate(1deg); }
+}
+.animate-float {
+  animation: floatGentle 4s ease-in-out infinite;
+}
+
+@keyframes floatSlowReverse {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(8px) rotate(-1deg); }
+}
+.animate-float-reverse {
+  animation: floatSlowReverse 5s ease-in-out infinite;
+}
+
+@keyframes spinSlow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+.animate-spin-slow {
+  animation: spinSlow 8s linear infinite;
+}
+
+/* Polaroid Card Effect */
+.polaroid {
+  background: #ffffff;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.polaroid:hover {
+  transform: translateY(-6px) scale(1.01) !important;
+  box-shadow: 0 20px 30px -10px rgba(163, 72, 94, 0.2);
+}
+
+/* Custom Tape Graphics */
+.washi-tape {
+  background: rgba(243, 222, 222, 0.7);
+  box-shadow: inset 0 0 4px rgba(0,0,0,0.06);
+  transform: rotate(-3deg);
+}
+
+/* Envelope 3D Open Effect */
+.envelope-wrapper {
+  perspective: 1000px;
+}
+.envelope-flap {
+  transform-origin: top center;
+  transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.envelope-open .envelope-flap {
+  transform: rotateX(180deg);
+  z-index: 10;
+}
+.letter-paper {
+  transition: transform 0.9s cubic-bezier(0.4, 0, 0.2, 1) 0.3s;
+}
+.envelope-open .letter-paper {
+  transform: translateY(-90px);
+}
+
+/* Wax Seal Style */
+.wax-seal {
+  background: radial-gradient(circle at 35% 35%, #C25975, #8E2F48);
+  box-shadow: 0 6px 16px rgba(142, 47, 72, 0.4), inset 0 2px 4px rgba(255, 255, 255, 0.3), inset 0 -2px 6px rgba(0, 0, 0, 0.4);
+  border: 2px solid #78243b;
+}
+.wax-seal:active {
+  transform: scale(0.95);
+}
+
+/* Custom Scrollbar for elegant feel */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #FAF8F5;
+}
+::-webkit-scrollbar-thumb {
+  background: #E89999;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #A3485E;
+}
